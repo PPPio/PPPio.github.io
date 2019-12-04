@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="CTF-Web," />
+  <meta name="keywords" content="Linux提权," />
 
 
 
@@ -79,32 +79,31 @@
 
 
 
-<meta name="description" content="之前嘶吼ctf的两道Web题目。 Web-1 easy_calcF12（目标存在WAF） 被WAF拦截 此处WAF的部署方式应该是反向代理的部署方式。绕过WAF需要利用请求走私漏洞（参考：https:&#x2F;&#x2F;paper.seebug.org&#x2F;1048&#x2F;） 这里可以使用burp插件进行测试  测试完的结果会放在插件Flow中. 这里不算事请求走私的典型场景（如TE-CL、CL-TE等）。 这里代理服务器">
-<meta name="keywords" content="CTF-Web">
+<meta name="description" content="这两种方法利用场景比较局限，就当增加一些思路了。 1、通过可写入的&#x2F;etc&#x2F;passwd文件实现Linux提权首先了解&#x2F;etc&#x2F;passwd中的各项内容  以root为例：root:x:0:0:root:&#x2F;root:&#x2F;bin&#x2F;bashroot：用户名。x：放置用户密码。密码直接从“&#x2F;etc&#x2F;shadow”文件中获取。0：root用户UID。0：root用户GID。root：用户描述的占位符。&#x2F;ro">
+<meta name="keywords" content="Linux提权">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Roarctf-Web">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;03&#x2F;Roarctf-Web&#x2F;index.html">
+<meta property="og:title" content="两种鸡肋的提权方法">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;04&#x2F;%E4%B8%A4%E7%A7%8D%E9%B8%A1%E8%82%8B%E7%9A%84%E6%8F%90%E6%9D%83%E6%96%B9%E6%B3%95&#x2F;index.html">
 <meta property="og:site_name" content="Sharp&#39;s Blog">
-<meta property="og:description" content="之前嘶吼ctf的两道Web题目。 Web-1 easy_calcF12（目标存在WAF） 被WAF拦截 此处WAF的部署方式应该是反向代理的部署方式。绕过WAF需要利用请求走私漏洞（参考：https:&#x2F;&#x2F;paper.seebug.org&#x2F;1048&#x2F;） 这里可以使用burp插件进行测试  测试完的结果会放在插件Flow中. 这里不算事请求走私的典型场景（如TE-CL、CL-TE等）。 这里代理服务器">
+<meta property="og:description" content="这两种方法利用场景比较局限，就当增加一些思路了。 1、通过可写入的&#x2F;etc&#x2F;passwd文件实现Linux提权首先了解&#x2F;etc&#x2F;passwd中的各项内容  以root为例：root:x:0:0:root:&#x2F;root:&#x2F;bin&#x2F;bashroot：用户名。x：放置用户密码。密码直接从“&#x2F;etc&#x2F;shadow”文件中获取。0：root用户UID。0：root用户GID。root：用户描述的占位符。&#x2F;ro">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAFjMt.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAZbv9.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAVmeP.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAVjfg.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAmSZq.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAmWkV.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAmo6J.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAKo6g.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAl0f0.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAlHne.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;f8ae5dcdac48fe37.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;d5ee69db94c74929.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;K4dkGj.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;K4wCOx.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;K40zs1.png">
-<meta property="og:updated_time" content="2019-12-03T12:13:00.059Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;63cf4f3f319a1518.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;007bdaef8608ac5d.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;63cb7cbe9f328658.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;38adb98547c9d109.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;52aafc5cb48cd15c.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;8dc0f03b1d781de5.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;dc043d2e85c27b87.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;a123a2e38bb318d4.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;16&#x2F;KkiWqO.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;16&#x2F;KkkKAg.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;16&#x2F;KkCEee.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;16&#x2F;KkAuKx.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;bf346ae94dd1ed90.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;16&#x2F;KkAJGd.png">
+<meta property="og:updated_time" content="2019-12-04T02:04:36.404Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAFjMt.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;10&#x2F;63cf4f3f319a1518.png">
 
 
 
@@ -134,13 +133,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/12/03/Roarctf-Web/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/12/04/两种鸡肋的提权方法/"/>
 
 
 
 
 
-  <title>Roarctf-Web | Sharp's Blog</title>
+  <title>两种鸡肋的提权方法 | Sharp's Blog</title>
   
 
 
@@ -267,7 +266,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/03/Roarctf-Web/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/04/%E4%B8%A4%E7%A7%8D%E9%B8%A1%E8%82%8B%E7%9A%84%E6%8F%90%E6%9D%83%E6%96%B9%E6%B3%95/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sharp">
@@ -284,7 +283,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Roarctf-Web</h1>
+          <h1 class="post-title" itemprop="name headline">两种鸡肋的提权方法</h1>
         
 
         <div class="post-meta">
@@ -296,8 +295,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-03T20:11:04+08:00">
-                2019-12-03
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-04T10:01:18+08:00">
+                2019-12-04
               </time>
             
 
@@ -319,8 +318,8 @@
               
               
                 <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/CTF/" itemprop="url" rel="index">
-                    <span itemprop="name">CTF</span>
+                  <a href="/categories/%E6%8F%90%E6%9D%83/" itemprop="url" rel="index">
+                    <span itemprop="name">提权</span>
                   </a>
                 </span>
 
@@ -356,36 +355,53 @@
       
 
       
-        <p>之前嘶吼ctf的两道Web题目。</p>
-<h1 id="Web-1-easy-calc"><a href="#Web-1-easy-calc" class="headerlink" title="Web-1 easy_calc"></a>Web-1 easy_calc</h1><p>F12（目标存在WAF）<br><img src="https://s2.ax1x.com/2019/10/17/KAFjMt.png" alt=""></p>
-<p>被WAF拦截<br><img src="https://s2.ax1x.com/2019/10/17/KAZbv9.png" alt=""></p>
-<p>此处WAF的部署方式应该是反向代理的部署方式。<br>绕过WAF需要利用请求走私漏洞（参考：<a href="https://paper.seebug.org/1048/）" target="_blank" rel="noopener">https://paper.seebug.org/1048/）</a></p>
-<p>这里可以使用burp插件进行测试<br><img src="https://s2.ax1x.com/2019/10/17/KAVmeP.png" alt=""></p>
-<p><img src="https://s2.ax1x.com/2019/10/17/KAVjfg.png" alt=""></p>
-<p>测试完的结果会放在插件Flow中.<br><img src="https://s2.ax1x.com/2019/10/17/KAmSZq.png" alt=""></p>
-<p>这里不算事请求走私的典型场景（如TE-CL、CL-TE等）。</p>
-<p>这里代理服务器（WAF）返回的是400，请求有误。是因为它发现请求头中既有CL也有TE，它认为这个请求是错误的。</p>
-<p>但是它这里把这个错误的请求发送到了后端服务器，后端服务器认为这个请求正常，直接就响应了，这样就绕过了中间的WAF。</p>
-<p>代码执行<br><img src="https://s2.ax1x.com/2019/10/17/KAmWkV.png" alt=""></p>
-<p>有了phpinfo之后需要关注一下disable_functions，可以看到exec、shell_exec、system等函数都被禁用了。<br><img src="https://s2.ax1x.com/2019/10/17/KAmo6J.png" alt=""></p>
-<p>找flag我们需要先列目录。从phpinfo里可以看到chdir已被禁用，这里用到了scandir()<br>直接使用scandir返回的是数组，还需要用var_dump()输出数组的详细信息。<br><code>var_dump(scandir(&#39;/&#39;));</code></p>
-<p>但是这里还存在对单引号、斜杠等符号的过滤，使用几个进制转换的函数绕过。</p>
-<p><strong>base_convert() 函数在任意进制之间转换数字。</strong><br><em>例：</em>base_convert(55490343972,10,36)() == phpinfo()</p>
-<p><strong>dechex() 函数把十进制数转换为十六进制数。</strong></p>
-<p><strong>hex2bin() 函数把十六进制值的字符串转换为 ASCII 字符。</strong></p>
-<p>构造payload<br><img src="https://s2.ax1x.com/2019/10/17/KAKo6g.png" alt=""><br><code>var_dump(scandir(/))</code><br><code>var_dump(base_convert(61693386291,10,36)(hex2bin(dechex(47))))</code></p>
-<p><strong>注：</strong>scandir这个函数在平时使用的时候参数是一个字符串，而在http传输的时候切不可使用引号，否则会返回错误。</p>
-<p>列目录发现flag！<br><img src="https://s2.ax1x.com/2019/10/17/KAl0f0.png" alt=""></p>
-<p>构造readfile读flag</p>
-<p><code>base_convert(2146934604002,10,36)(hex2bin(dechex(47)).base_convert(25254448,10,36))</code><br><img src="https://s2.ax1x.com/2019/10/17/KAlHne.png" alt=""></p>
-<h1 id="Web-2-easy-java"><a href="#Web-2-easy-java" class="headerlink" title="Web-2 easy_java"></a>Web-2 easy_java</h1><p>进入之后是一个迷惑性的登录界面<br><img src="https://ftp.bmp.ovh/imgs/2019/10/f8ae5dcdac48fe37.png" alt=""><br>其实关键点在帮助文档下载那儿，点击之后第一个想到任意文件下载，但是点击之后报错：<br><img src="https://ftp.bmp.ovh/imgs/2019/10/d5ee69db94c74929.png" alt=""><br>有经验的话就会换个请求方式试一下，POST方式成功：<br><img src="https://s2.ax1x.com/2019/10/30/K4dkGj.png" alt=""><br>通过报错页面可以看到是tomcat，可以下载 WEB-INF/web.xml ，看到了和flag相关的文件<br><img src="https://s2.ax1x.com/2019/10/30/K4wCOx.png" alt=""><br><strong>WEB-INF</strong></p>
-<p><em>WEB-INF是Java的WEB应用的安全目录。如果想在页面中直接访问其中的文件，必须通过web.xml文件对要访问的文件进行相应映射才能访问。WEB-INF主要包含一下文件或目录：</em></p>
-<p><code>/WEB-INF/web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则。</code></p>
-<p><code>/WEB-INF/classes/：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</code></p>
-<p><code>/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</code></p>
-<p><code>/WEB-INF/src/：源码目录，按照包名结构放置各个java文件</code></p>
-<p><code>/WEB-INF/database.properties：数据库配置文件</code></p>
-<p>下载该文件，根据其文件的分类规则我们推出其文件的位置<br>WEB-INF/classes/com/wm/ctf/FlagController.class<br><img src="https://s2.ax1x.com/2019/10/30/K40zs1.png" alt=""><br>解码得到flag。</p>
+        <p>这两种方法利用场景比较局限，就当增加一些思路了。</p>
+<h3 id="1、通过可写入的-etc-passwd文件实现Linux提权"><a href="#1、通过可写入的-etc-passwd文件实现Linux提权" class="headerlink" title="1、通过可写入的/etc/passwd文件实现Linux提权"></a>1、通过可写入的/etc/passwd文件实现Linux提权</h3><p>首先了解/etc/passwd中的各项内容</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/63cf4f3f319a1518.png" alt=""></p>
+<p>以root为例：root:x:0:0:root:/root:/bin/bash<br><em>root：用户名。<br>x：放置用户密码。密码直接从“/etc/shadow”文件中获取。<br>0：root用户UID。<br>0：root用户GID。<br>root：用户描述的占位符。<br>/root：用户的家目录。将在终端会话中向用户显示该目录。<br>/bin/bash：用户的shell。根据用户的目的，将在用户登录时生成此shell</em></p>
+<p>拥有一个低权限的shell之后，我们可以利用python脚本快速获取目标机器的配置信息。</p>
+<p>Linux提权辅助脚本：</p>
+<p><code>https://www.securitysift.com/download/linuxprivchecker.py</code></p>
+<p>可以快速检查配置问题，并列出所有可写文件！</p>
+<p>首先可以在一个普通用户可写的目录下（如/tmp）下载脚本,linux预装python，直接执行python脚本。</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/007bdaef8608ac5d.png" alt=""></p>
+<p>/etc/passwd 文件可写</p>
+<p><strong>我们写一个uid=0 gid=0的用户，即可提权！</strong></p>
+<p>难点：<strong>密码</strong>！（写入的时候必须写入密码）</p>
+<p>**可以使用perl语言生成带有salt的加密密码</p>
+<p><code>perl -le &#39;print crypt(&quot;PASSWD&quot;,&quot;SALT&quot;)&#39;</code></p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/63cb7cbe9f328658.png" alt=""></p>
+<p>写文件：</p>
+<p><code>echo &quot;testtest:sakqI9tJcMmO.:0:0:User_like_root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd</code></p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/38adb98547c9d109.png" alt=""></p>
+<p>切换为添加的testtest用户，成功提权！</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/52aafc5cb48cd15c.png" alt=""></p>
+<h3 id="2、sudo-权限绕过"><a href="#2、sudo-权限绕过" class="headerlink" title="2、sudo 权限绕过"></a>2、sudo 权限绕过</h3><p><strong>影响范围：</strong>sudo 1.8.28 之前的所有版本</p>
+<p><strong>漏洞成因：</strong>sudo 将用户 ID 转换为用户名的函数会将 -1（或无效等效的 4294967295）误认为是 0，而这正好是 root 用户 User ID</p>
+<p><code>sudo -V</code></p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/8dc0f03b1d781de5.png" alt=""></p>
+<p>使用一个普通用户</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/dc043d2e85c27b87.png" alt=""></p>
+<p>直接执行sudo 失败</p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/a123a2e38bb318d4.png" alt=""></p>
+<p>之前认为的安全配置（直接写入sudoers 文件）：</p>
+<p><img src="https://s2.ax1x.com/2019/10/16/KkiWqO.png" alt=""></p>
+<p>注（字段的含义）：<br>授权用户/组 主机=[(切换到哪些用户或组)][是否需要输入密码验证] 命令1,命令2 </p>
+<p>此时直接<code>sudo -u#0 whoami</code> 失败，但是可以<code>sudo -u#-1 whoami</code> 成功提权！原因就是sudo 将用户 ID 转换为用户名的函数会将 -1（或 4294967295）误认为是 0，而这正好是 root 用户 User ID</p>
+<p><img src="https://s2.ax1x.com/2019/10/16/KkkKAg.png" alt=""></p>
+<p>常见的配置，如： 允许test用户在任意主机上 任何用户 但这个用户不能属于root组 执行vim命令</p>
+<p><img src="https://s2.ax1x.com/2019/10/16/KkCEee.png" alt=""></p>
+<p>使用<code>sudo -u#-1 vim</code> 绕过限制，并以root权限查看/etc/shadow文件</p>
+<p><img src="https://s2.ax1x.com/2019/10/16/KkAuKx.png" alt=""></p>
+<p>还有一种更常见也更简单的配置sudo方式，root用户将test用户加入到sudo组中</p>
+<p><code>usermod -a -G sudo test</code></p>
+<p>使用test用户执行：</p>
+<p><code>sudo -u#0 /bin/bash</code></p>
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/bf346ae94dd1ed90.png" alt=""></p>
+<p>这样直接就可以切换到root，是因为test用户拥有了sudo执行所有的权限。</p>
+<p><img src="https://s2.ax1x.com/2019/10/16/KkAJGd.png" alt=""></p>
+<p><strong>局限性：</strong></p>
+<p>1、sudo 版本在 1.8.28 之前<br>2、它只能在某个用户通过sudoers文件的配置访问某个命令的权限时才能生效。如果不是这种设置——大多数Linux发行版默认都不是——那么这个漏洞将不会产生任何影响。</p>
 
       
     </div>
@@ -403,7 +419,7 @@
       
         <div class="post-tags">
           
-            <a href="/tags/CTF-Web/" rel="tag"># CTF-Web</a>
+            <a href="/tags/Linux%E6%8F%90%E6%9D%83/" rel="tag"># Linux提权</a>
           
         </div>
       
@@ -416,8 +432,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/12/03/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2019/12/04/Misc%E5%85%B6%E4%BB%96-1/" rel="next" title="Misc其他-1">
+                <i class="fa fa-chevron-left"></i> Misc其他-1
               </a>
             
           </div>
@@ -425,10 +441,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2019/12/04/Misc%E5%9B%BE%E7%89%87%E9%9A%90%E5%86%99-1/" rel="prev" title="Misc图片隐写-1">
-                Misc图片隐写-1 <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -582,7 +594,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-1"><a class="nav-link" href="#Web-1-easy-calc"><span class="nav-number">1.</span> <span class="nav-text">Web-1 easy_calc</span></a></li><li class="nav-item nav-level-1"><a class="nav-link" href="#Web-2-easy-java"><span class="nav-number">2.</span> <span class="nav-text">Web-2 easy_java</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#1、通过可写入的-etc-passwd文件实现Linux提权"><span class="nav-number">1.</span> <span class="nav-text">1、通过可写入的/etc/passwd文件实现Linux提权</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#2、sudo-权限绕过"><span class="nav-number">2.</span> <span class="nav-text">2、sudo 权限绕过</span></a></li></ol></div>
             
 
           </div>
