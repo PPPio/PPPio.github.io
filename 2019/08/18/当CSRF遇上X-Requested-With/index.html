@@ -79,18 +79,18 @@
 
 
 
-<meta name="description" content="X-Requested-With: XMLHttpRequest我们经常可以在请求头中看到这个字段，它代表该请求为ajax异步请求。 比如：  当CSRF遇上X-Requested-With如果对这样的请求直接构造CSRF POC，会无法成功，因为用户点击我们构造的页面，请求头中没有了“X-Requested-With: XMLHttpRequest”导致错误(但不是所有的情况都会错误)。 这个情">
+<meta name="description" content="X-Requested-With: XMLHttpRequest我们经常可以在请求头中看到这个字段，它代表该请求为ajax异步请求。 比如：  当CSRF遇上X-Requested-With如果对这样的请求直接构造CSRF POC，有时候会无法成功，因为用户点击我们构造的页面，请求头中没有了“X-Requested-With: XMLHttpRequest”导致错误(但不是所有的情况都会错误)。">
 <meta name="keywords" content="CSRF">
 <meta property="og:type" content="article">
 <meta property="og:title" content="当CSRF遇上X-Requested-With">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;08&#x2F;18&#x2F;%E5%BD%93CSRF%E9%81%87%E4%B8%8AX-Requested-With&#x2F;index.html">
 <meta property="og:site_name" content="Sharp&#39;s Blog">
-<meta property="og:description" content="X-Requested-With: XMLHttpRequest我们经常可以在请求头中看到这个字段，它代表该请求为ajax异步请求。 比如：  当CSRF遇上X-Requested-With如果对这样的请求直接构造CSRF POC，会无法成功，因为用户点击我们构造的页面，请求头中没有了“X-Requested-With: XMLHttpRequest”导致错误(但不是所有的情况都会错误)。 这个情">
+<meta property="og:description" content="X-Requested-With: XMLHttpRequest我们经常可以在请求头中看到这个字段，它代表该请求为ajax异步请求。 比如：  当CSRF遇上X-Requested-With如果对这样的请求直接构造CSRF POC，有时候会无法成功，因为用户点击我们构造的页面，请求头中没有了“X-Requested-With: XMLHttpRequest”导致错误(但不是所有的情况都会错误)。">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;12&#x2F;30873d1d7c9d70f2.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;12&#x2F;4fc2b3128f279d28.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;12&#x2F;f69431014ba7c6ce.png">
-<meta property="og:updated_time" content="2020-01-10T09:51:47.806Z">
+<meta property="og:updated_time" content="2020-01-16T14:46:35.749Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;12&#x2F;30873d1d7c9d70f2.png">
 
@@ -347,7 +347,7 @@
         <h2 id="X-Requested-With-XMLHttpRequest"><a href="#X-Requested-With-XMLHttpRequest" class="headerlink" title="X-Requested-With: XMLHttpRequest"></a>X-Requested-With: XMLHttpRequest</h2><p>我们经常可以在请求头中看到这个字段，它代表该请求为ajax异步请求。</p>
 <p>比如：</p>
 <p><img src="https://i.bmp.ovh/imgs/2019/12/30873d1d7c9d70f2.png" alt=""></p>
-<h2 id="当CSRF遇上X-Requested-With"><a href="#当CSRF遇上X-Requested-With" class="headerlink" title="当CSRF遇上X-Requested-With"></a>当CSRF遇上X-Requested-With</h2><p>如果对这样的请求直接构造CSRF POC，会无法成功，因为用户点击我们构造的页面，请求头中没有了“X-Requested-With: XMLHttpRequest”导致错误(但不是所有的情况都会错误)。</p>
+<h2 id="当CSRF遇上X-Requested-With"><a href="#当CSRF遇上X-Requested-With" class="headerlink" title="当CSRF遇上X-Requested-With"></a>当CSRF遇上X-Requested-With</h2><p>如果对这样的请求直接构造CSRF POC，有时候会无法成功，因为用户点击我们构造的页面，请求头中没有了“X-Requested-With: XMLHttpRequest”导致错误(但不是所有的情况都会错误)。</p>
 <p>这个情况让我想起了之前利用xhr来构造Json格式的CSRF，使用XHR构造poc：</p>
 <p><img src="https://i.bmp.ovh/imgs/2019/12/4fc2b3128f279d28.png" alt=""></p>
 <p>但是使用xhr构造的页面，请求头中依旧没有该字段。</p>
