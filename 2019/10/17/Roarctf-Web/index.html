@@ -79,13 +79,13 @@
 
 
 
-<meta name="description" content="嘶吼ctf的两道Web题目。 Web-1 easy_calcF12（目标存在WAF） 被WAF拦截 此处WAF的部署方式应该是反向代理的部署方式。绕过WAF需要利用请求走私漏洞（参考：https:&#x2F;&#x2F;paper.seebug.org&#x2F;1048&#x2F;） 这里可以使用burp插件进行测试  测试完的结果会放在插件Flow中. 这里不算事请求走私的典型场景（如TE-CL、CL-TE等）。 这里代理服务器（W">
+<meta name="description" content="嘶吼ctf的两道Web题目。 Web-1 easy_calcF12（目标存在WAF） 被WAF拦截 此处WAF的部署方式应该是反向代理的部署方式。绕过WAF需要利用请求走私漏洞（参考：https:&#x2F;&#x2F;paper.seebug.org&#x2F;1048&#x2F;） 这里可以使用burp插件进行测试  测试完的结果会放在插件Flow中. 这里代理服务器（WAF）返回的是400，请求有误。是因为它发现请求头中既有CL也">
 <meta name="keywords" content="CTF-Web">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Roarctf-Web">
 <meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;Roarctf-Web&#x2F;index.html">
 <meta property="og:site_name" content="Sharp_T&#39;s Blog">
-<meta property="og:description" content="嘶吼ctf的两道Web题目。 Web-1 easy_calcF12（目标存在WAF） 被WAF拦截 此处WAF的部署方式应该是反向代理的部署方式。绕过WAF需要利用请求走私漏洞（参考：https:&#x2F;&#x2F;paper.seebug.org&#x2F;1048&#x2F;） 这里可以使用burp插件进行测试  测试完的结果会放在插件Flow中. 这里不算事请求走私的典型场景（如TE-CL、CL-TE等）。 这里代理服务器（W">
+<meta property="og:description" content="嘶吼ctf的两道Web题目。 Web-1 easy_calcF12（目标存在WAF） 被WAF拦截 此处WAF的部署方式应该是反向代理的部署方式。绕过WAF需要利用请求走私漏洞（参考：https:&#x2F;&#x2F;paper.seebug.org&#x2F;1048&#x2F;） 这里可以使用burp插件进行测试  测试完的结果会放在插件Flow中. 这里代理服务器（WAF）返回的是400，请求有误。是因为它发现请求头中既有CL也">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAFjMt.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAZbv9.png">
@@ -102,7 +102,7 @@
 <meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;K4dkGj.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;K4wCOx.png">
 <meta property="og:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;30&#x2F;K40zs1.png">
-<meta property="og:updated_time" content="2020-01-10T09:51:37.404Z">
+<meta property="og:updated_time" content="2020-03-01T12:25:57.477Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;s2.ax1x.com&#x2F;2019&#x2F;10&#x2F;17&#x2F;KAFjMt.png">
 
@@ -363,7 +363,6 @@
 <p>这里可以使用burp插件进行测试<br><img src="https://s2.ax1x.com/2019/10/17/KAVmeP.png" alt=""></p>
 <p><img src="https://s2.ax1x.com/2019/10/17/KAVjfg.png" alt=""></p>
 <p>测试完的结果会放在插件Flow中.<br><img src="https://s2.ax1x.com/2019/10/17/KAmSZq.png" alt=""></p>
-<p>这里不算事请求走私的典型场景（如TE-CL、CL-TE等）。</p>
 <p>这里代理服务器（WAF）返回的是400，请求有误。是因为它发现请求头中既有CL也有TE，它认为这个请求是错误的。</p>
 <p>但是它这里把这个错误的请求发送到了后端服务器，后端服务器认为这个请求正常，直接就响应了，这样就绕过了中间的WAF。</p>
 <p>代码执行<br><img src="https://s2.ax1x.com/2019/10/17/KAmWkV.png" alt=""></p>

