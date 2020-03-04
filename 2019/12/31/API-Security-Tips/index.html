@@ -1,0 +1,861 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="API Security," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="看了Inon Shkedy大佬的31天API安全挑战，记一下。 https:&#x2F;&#x2F;github.com&#x2F;smodnix&#x2F;31-days-of-API-Security-Tips 注意不同版本的API通常较旧的API版本更容易遭受攻击。可以利用不同版本接口的相似性、可预测性来查找旧版本进行测试。比如fuzz版本号。 比如： 遇到一个登录接口：api&#x2F;v3&#x2F;login？可以很轻易的猜测到可能存在 1ap">
+<meta name="keywords" content="API Security">
+<meta property="og:type" content="article">
+<meta property="og:title" content="API-Security-Tips">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;31&#x2F;API-Security-Tips&#x2F;index.html">
+<meta property="og:site_name" content="Sharp_T&#39;s Blog">
+<meta property="og:description" content="看了Inon Shkedy大佬的31天API安全挑战，记一下。 https:&#x2F;&#x2F;github.com&#x2F;smodnix&#x2F;31-days-of-API-Security-Tips 注意不同版本的API通常较旧的API版本更容易遭受攻击。可以利用不同版本接口的相似性、可预测性来查找旧版本进行测试。比如fuzz版本号。 比如： 遇到一个登录接口：api&#x2F;v3&#x2F;login？可以很轻易的猜测到可能存在 1ap">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;e0bd6151f372ad4f.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;8a07cd3fb3ee44aa.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;d045ef9a1592e6e6.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;de91236c519eb9ec.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;5ec7d3a21bd09290.png">
+<meta property="og:updated_time" content="2020-03-04T15:26:05.519Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;e0bd6151f372ad4f.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/12/31/API-Security-Tips/"/>
+
+
+
+
+
+  <title>API-Security-Tips | Sharp_T's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sharp_T's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/31/API-Security-Tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sharp_T">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sharp_T's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">API-Security-Tips</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-31T21:36:16+08:00">
+                2019-12-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">Web安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看了Inon Shkedy大佬的31天API安全挑战，记一下。</p>
+<p><a href="https://github.com/smodnix/31-days-of-API-Security-Tips" target="_blank" rel="noopener">https://github.com/smodnix/31-days-of-API-Security-Tips</a></p>
+<h2 id="注意不同版本的API"><a href="#注意不同版本的API" class="headerlink" title="注意不同版本的API"></a>注意不同版本的API</h2><p>通常较旧的API版本更容易遭受攻击。<br>可以利用不同版本接口的相似性、可预测性来查找旧版本进行测试。比如fuzz版本号。</p>
+<p>比如：</p>
+<p>遇到一个登录接口：api/v3/login？<br>可以很轻易的猜测到可能存在</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">api&#x2F;v2&#x2F;login?</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">api&#x2F;v1&#x2F;login?</span></pre></td></tr></table></figure>
+
+<p>较旧的版本可能没有太多安全机制。可能没有验证码和锁定机制，可以暴力破解，甚至可能存在SQL注入，任意用户登录等。</p>
+<p>当然，举一反三，也要能够想到可能还存在新的版本，比如：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">api&#x2F;v4&#x2F;login?</span></pre></td></tr></table></figure>
+
+<p>新的版本可能处于测试阶段，主要的登录功能已经完成，但是验证码等安全机制可能还没有加。</p>
+<h2 id="注意可以实现同一个功能的多个API"><a href="#注意可以实现同一个功能的多个API" class="headerlink" title="注意可以实现同一个功能的多个API"></a>注意可以实现同一个功能的多个API</h2><p>同一个系统，可能存在实现同一功能的多个api。</p>
+<p>比如：<br>遇到一个登录认证接口：api/v3/login<br>可能系统中还存在可以登录认证的其他接口：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">api&#x2F;v2&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">api&#x2F;mobile&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">api&#x2F;oauth</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">api&#x2F;oauth&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">api&#x2F;magic_link</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<p>举一反三，子域名、子系统中也可能有实现主站功能的接口，而其安全性可能更差。</p>
+<h2 id="BOLA-IDOR"><a href="#BOLA-IDOR" class="headerlink" title="BOLA(IDOR)"></a>BOLA(IDOR)</h2><p>不安全的对象引用（越权）</p>
+<p>细心关注api中的各个对象参数（各种id等），熟悉各个业务的权限划分。</p>
+<p><a href="https://medium.com/@inonst/a-deep-dive-on-the-most-critical-api-vulnerability-bola-1342224ec3f2" target="_blank" rel="noopener">https://medium.com/@inonst/a-deep-dive-on-the-most-critical-api-vulnerability-bola-1342224ec3f2</a></p>
+<h2 id="RoR-命令注入tips"><a href="#RoR-命令注入tips" class="headerlink" title="RoR 命令注入tips"></a>RoR 命令注入tips</h2><p>测试Ruby on Rails应用，并注意到一个包含URL的HTTP参数时，可以尝试命令注入。因为开发人员有时会使用“Kernel#open”函数来访问URL，只需发送管道作为第一个字符，然后发送命令即可实现命令注入。</p>
+<p>About the open function: <a href="https://apidock.com/ruby/Kernel/open" target="_blank" rel="noopener">https://apidock.com/ruby/Kernel/open</a></p>
+<h2 id="SSRF-Tips"><a href="#SSRF-Tips" class="headerlink" title="SSRF Tips"></a>SSRF Tips</h2><p>发现了SSRF，可以用于：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">内网IP、端口、服务探测</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">利用云服务。如果是在亚马逊云上发现的，可以利用云服务169.254.169.254获取AWS密钥、SSH密钥等，进而做到实例接管。谷歌云也同样可以利用。</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">使用http:&#x2F;&#x2F;webhook.site来显示IP地址和HTTP库</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">下载很大的文件(DOS 请求大文件，始终保持连接keep-alive always)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<p>webhook.site</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/e0bd6151f372ad4f.png" alt=""></p>
+<h2 id="Mass-Assignment（自动绑定漏洞）"><a href="#Mass-Assignment（自动绑定漏洞）" class="headerlink" title="Mass Assignment（自动绑定漏洞）"></a>Mass Assignment（自动绑定漏洞）</h2><p>比如前端的Form表单中只有三个参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;form action&#x3D;“addUserInfo” method&#x3D;&quot;post&quot;&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">     &lt;input name&#x3D;username type&#x3D;text&gt;&lt;br&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">     &lt;input name&#x3D;phone type&#x3D;text&gt;&lt;br&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">     &lt;input name&#x3D;email text&#x3D;text&gt;&lt;br&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">     &lt;input type&#x3D;submit&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">  &lt;&#x2F;form&gt;</span></pre></td></tr></table></figure>
+
+<p>但是用户的实体类中还有更重要的参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">public class User &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">     private String userid;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">     private String username;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">     private String phone;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">     private String email;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">     private boolean isAdmin;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">   &#125;</span></pre></td></tr></table></figure>
+<p>如果用户这样请求，危害就显而易见了：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">POST &#x2F;addUserInfo</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">username&#x3D;daheike&amp;password&#x3D;bypass&amp;email&#x3D;test@test.com&amp;isAdmin&#x3D;true</span></pre></td></tr></table></figure>
+
+<p>我们可以通过Fuzz，当然也可以不猜测对象的属性名称，有时候只需要找到一个返回所有属性名称的GET端点即可。</p>
+<p>比如：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/8a07cd3fb3ee44aa.png" alt=""></p>
+<h2 id="不止局限于一端"><a href="#不止局限于一端" class="headerlink" title="不止局限于一端"></a>不止局限于一端</h2><p>不要以为 移动/Web 端使用的API使用了同样的安全机制。</p>
+<p>测试完api/login之后，不妨测试一下api/mobile/login，可能会有新的发现。</p>
+<h2 id="检查API是否也支持SOAP"><a href="#检查API是否也支持SOAP" class="headerlink" title="检查API是否也支持SOAP"></a>检查API是否也支持SOAP</h2><p>将 content-type 修改为 application/xml ,在请求正文中添加一个简单的XML，然后查看API如何处理它。</p>
+<p>有时，身份验证是在REST和SOAP API之间共享的不同组件中完成的== SOAP API可能支持JWT。</p>
+<h2 id="先关注请求正文中的id"><a href="#先关注请求正文中的id" class="headerlink" title="先关注请求正文中的id"></a>先关注请求正文中的id</h2><p>在测试越权漏洞的时候，HTTP请求正文中的ID往往比URL中的ID更容易受到攻击（当然，url中的id也别忘了测试）。</p>
+<h2 id="猜测admin-API"><a href="#猜测admin-API" class="headerlink" title="猜测admin API"></a>猜测admin API</h2><p>利用API的可预测性来查找admin API端点。</p>
+<p>比如遇到了：GET /api/v1/users/<id></p>
+<p>可以尝试：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">DELETE &#x2F;api&#x2F;v1&#x2F;users&#x2F;&lt;id&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">POST &#x2F;create&#x2F;v1&#x2F;users</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<h2 id="Authorization-header"><a href="#Authorization-header" class="headerlink" title="Authorization header"></a>Authorization header</h2><p>如果API使用了Authorization header，就不要考虑CSRF了。</p>
+<h2 id="即使id不可预测也要尝试"><a href="#即使id不可预测也要尝试" class="headerlink" title="即使id不可预测也要尝试"></a>即使id不可预测也要尝试</h2><p>测试越权的过程中，即使id不可预测，或者是GUID而非数字，也要尝试发送数字值进行测试。因为有时会同时支持这两种方式。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">user_id&#x3D;111</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">user_id&#x3D;xxxxx-aaaaa-bbbb</span></pre></td></tr></table></figure>
+
+<h2 id="通过自动绑定绕过安全机制"><a href="#通过自动绑定绕过安全机制" class="headerlink" title="通过自动绑定绕过安全机制"></a>通过自动绑定绕过安全机制</h2><p>这个其实更类似于前面提到的相同功能api。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">POST &#x2F;api&#x2F;reset_pass 需要旧密码。</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">PUT &#x2F;api&#x2F;update_user 不需要旧密码。</span></pre></td></tr></table></figure>
+
+<h2 id="扩大攻击面"><a href="#扩大攻击面" class="headerlink" title="扩大攻击面"></a>扩大攻击面</h2><p>查找子域</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;censys.io&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.virustotal.com&#x2F;gui&#x2F;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<h2 id="静态资源"><a href="#静态资源" class="headerlink" title="静态资源"></a>静态资源</h2><p>对静态资源的权限校验可能不够严格，可以尝试越权查看其他用户的静态资源。</p>
+<h2 id="Burp"><a href="#Burp" class="headerlink" title="Burp"></a>Burp</h2><p>burp一直开着，target会以树状的形式记录访问过的所有API端点。</p>
+<h2 id="旧版本的移动客户端"><a href="#旧版本的移动客户端" class="headerlink" title="旧版本的移动客户端"></a>旧版本的移动客户端</h2><p>遇到移动端证书锁定？尝试测试它们的旧版本，旧版本没有证书锁定的概率很大，节约时间。</p>
+<p>旧版本中也可能会有一些旧版本的api。</p>
+<h2 id="关注边缘功能"><a href="#关注边缘功能" class="headerlink" title="关注边缘功能"></a>关注边缘功能</h2><p>测试人员和开发人员都会在主要功能点投入大量精力。我们可以尝试关注一些边缘的功能api，发现问题的概率很高。</p>
+<h2 id="容易出现问题的功能点"><a href="#容易出现问题的功能点" class="headerlink" title="容易出现问题的功能点"></a>容易出现问题的功能点</h2><ul>
+<li>用户组管理</li>
+<li>导出为CSV/HTML/PDF</li>
+<li>仪表板的自定义视图</li>
+<li>子用户的创建和管理</li>
+<li>对象共享（照片、帖子等）</li>
+<li>…</li>
+</ul>
+<h2 id="非生产环境、非主站"><a href="#非生产环境、非主站" class="headerlink" title="非生产环境、非主站"></a>非生产环境、非主站</h2><p>主站的功能不一定只在主站上有，测试站点说不定还正常运行，子系统说不定也有同样的功能。测试站点和子系统的安全性可能更差。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">www.target.com&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">beta.target.com&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">test.target.vom&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<p><a href="http://www.anandpraka.sh/2016/03/how-i-could-have-hacked-your-facebook.html" target="_blank" rel="noopener">http://www.anandpraka.sh/2016/03/how-i-could-have-hacked-your-facebook.html</a></p>
+<h2 id="关注JS中的api"><a href="#关注JS中的api" class="headerlink" title="关注JS中的api"></a>关注JS中的api</h2><p>通过寻找JS中的接口来扩大攻击面。<br>JS中有可能会有一些接口的访问方式等等，甚至会有更敏感的信息。</p>
+<h2 id="数据暴露过多"><a href="#数据暴露过多" class="headerlink" title="数据暴露过多"></a>数据暴露过多</h2><p>有些API可能泄漏用户不应该访问的过多数据。或者比如遇到api/receipt，可以尝试寻找类似</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">api&#x2F;all_receipt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">api&#x2F;download_receipt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">api&#x2F;export_receipt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<h2 id="黑盒到白盒"><a href="#黑盒到白盒" class="headerlink" title="黑盒到白盒"></a>黑盒到白盒</h2><p>如果发现了可以任意文件读取、下载的漏洞，可以获取源码之后，审计源代码寻找新的漏洞。</p>
+<h2 id="非生产环境"><a href="#非生产环境" class="headerlink" title="非生产环境"></a>非生产环境</h2><p>开发人员可能会在非生产环境禁用安全机制。api/login</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">api&#x2F;test&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">api&#x2F;tmp&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">api&#x2F;qa&#x2F;login</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<h2 id="导出注入"><a href="#导出注入" class="headerlink" title="导出注入"></a>导出注入</h2><p>导出为PDF功能，开发人员很有可能使用外部库在后台转换HTML-&gt; PDF。尝试注入HTML元素并导致“导出注入”。</p>
+<ul>
+<li>任意文件读取/下载</li>
+</ul>
+<p>攻击过程：<br><img src="https://i.bmp.ovh/imgs/2020/03/d045ef9a1592e6e6.png" alt=""></p>
+<p>PDF回应：<br><img src="https://i.bmp.ovh/imgs/2020/03/de91236c519eb9ec.png" alt=""></p>
+<ul>
+<li>SSRF</li>
+</ul>
+<p>可以尝试注入html标签来探测SSRF。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;img src &#x3D;” http:&#x2F;&#x2F;127.0.0.1:666” &#x2F;&gt;  &#x2F;&#x2F;通过延时判断存活</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&lt;object data &#x3D;” http:&#x2F;&#x2F;127.0.0.1:8443” &#x2F;&gt;  &#x2F;&#x2F;通过Object，Iframe和Frame标签访问内部HTTP接口并观察响应</span></pre></td></tr></table></figure>
+
+<p>PDF回应：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/5ec7d3a21bd09290.png" alt=""></p>
+<p><a href="https://medium.com/@inonst/export-injection-2eebc4f17117" target="_blank" rel="noopener">https://medium.com/@inonst/export-injection-2eebc4f17117</a></p>
+<h2 id="越权绕过"><a href="#越权绕过" class="headerlink" title="越权绕过"></a>越权绕过</h2><p>在某些情况下，AuthZ机制需要使用纯字符串（在这种情况下为ID），并且如果它接收到JSON，则不会执行AuthZ检查。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">用数组包装ID- &#123;“id”:111&#125;&gt;&#123;“id”:[111]&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">JSON包装&#123;“id”:111&#125;-&gt;&#123;“id”:&#123;“id”:111&#125;&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">两次发送ID URL?id&#x3D;&lt;LEGIT&gt;&amp;id&#x3D;&lt;VICTIM&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">发送通配符 &#123;&quot;user_id&quot;:&quot;*&quot;&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">...</span></pre></td></tr></table></figure>
+
+<h2 id="XSS"><a href="#XSS" class="headerlink" title="XSS"></a>XSS</h2><p>API不返回HTML，而是返回JSON。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#123;&quot;name&quot;:&quot;In&lt;script&gt;alert(21)&lt;&#x2F;script&gt;on&#125;</span></pre></td></tr></table></figure>
+
+<h2 id="net-应用tips"><a href="#net-应用tips" class="headerlink" title=".net 应用tips"></a>.net 应用tips</h2><p>遇到包含文件路径或名称的参数，开发人员有时会使用“ Path.Combine（path_1，path_2）”创建完整路径。Path.Combine具有一个奇怪的特性：如果param＃2是绝对路径，则param＃1被忽略。</p>
+<h2 id="了解应用的基础实现"><a href="#了解应用的基础实现" class="headerlink" title="了解应用的基础实现"></a>了解应用的基础实现</h2><p>有的api会公布应用程序的基础实现，或者我们从某些途径拿到实现文档之类的材料，就可以利用这些更好地了解用户，角色，资源及其之间的相关性，从而能发现更多更酷的漏洞。</p>
+<h2 id="旧版本的移动端"><a href="#旧版本的移动端" class="headerlink" title="旧版本的移动端"></a>旧版本的移动端</h2><p>如果应用有移动客户端，尝试关注旧版本的客户端和旧的功能，旧版本可能安全性较弱。</p>
+<h2 id="limit-dos"><a href="#limit-dos" class="headerlink" title="limit dos"></a>limit dos</h2><p>找到了limit/page 参数，比如/api/news?limit=100</p>
+<p>它可能容易受到DoS。尝试发送长值（例如limit=999999999）</p>
+<p>这种是因为超长字段进入了refer里，refer过长导致服务器无法响应。</p>
+<p>类似的，超长参数传入了set-cookie里，也可以导致服务器无法响应。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/API-Security/" rel="tag"># API Security</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/11/08/%E4%B8%A4%E7%A7%8D%E9%B8%A1%E8%82%8B%E7%9A%84%E6%8F%90%E6%9D%83%E6%96%B9%E6%B3%95/" rel="next" title="两种鸡肋的提权方法">
+                <i class="fa fa-chevron-left"></i> 两种鸡肋的提权方法
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="Sharp_T" />
+            
+              <p class="site-author-name" itemprop="name">Sharp_T</p>
+              <p class="site-description motion-element" itemprop="description">人间万事消磨尽</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.vkxss.top/" title="VK" target="_blank">VK</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#注意不同版本的API"><span class="nav-number">1.</span> <span class="nav-text">注意不同版本的API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#注意可以实现同一个功能的多个API"><span class="nav-number">2.</span> <span class="nav-text">注意可以实现同一个功能的多个API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#BOLA-IDOR"><span class="nav-number">3.</span> <span class="nav-text">BOLA(IDOR)</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#RoR-命令注入tips"><span class="nav-number">4.</span> <span class="nav-text">RoR 命令注入tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#SSRF-Tips"><span class="nav-number">5.</span> <span class="nav-text">SSRF Tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Mass-Assignment（自动绑定漏洞）"><span class="nav-number">6.</span> <span class="nav-text">Mass Assignment（自动绑定漏洞）</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#不止局限于一端"><span class="nav-number">7.</span> <span class="nav-text">不止局限于一端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#检查API是否也支持SOAP"><span class="nav-number">8.</span> <span class="nav-text">检查API是否也支持SOAP</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#先关注请求正文中的id"><span class="nav-number">9.</span> <span class="nav-text">先关注请求正文中的id</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#猜测admin-API"><span class="nav-number">10.</span> <span class="nav-text">猜测admin API</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Authorization-header"><span class="nav-number">11.</span> <span class="nav-text">Authorization header</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#即使id不可预测也要尝试"><span class="nav-number">12.</span> <span class="nav-text">即使id不可预测也要尝试</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#通过自动绑定绕过安全机制"><span class="nav-number">13.</span> <span class="nav-text">通过自动绑定绕过安全机制</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#扩大攻击面"><span class="nav-number">14.</span> <span class="nav-text">扩大攻击面</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#静态资源"><span class="nav-number">15.</span> <span class="nav-text">静态资源</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Burp"><span class="nav-number">16.</span> <span class="nav-text">Burp</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旧版本的移动客户端"><span class="nav-number">17.</span> <span class="nav-text">旧版本的移动客户端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关注边缘功能"><span class="nav-number">18.</span> <span class="nav-text">关注边缘功能</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#容易出现问题的功能点"><span class="nav-number">19.</span> <span class="nav-text">容易出现问题的功能点</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非生产环境、非主站"><span class="nav-number">20.</span> <span class="nav-text">非生产环境、非主站</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关注JS中的api"><span class="nav-number">21.</span> <span class="nav-text">关注JS中的api</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#数据暴露过多"><span class="nav-number">22.</span> <span class="nav-text">数据暴露过多</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#黑盒到白盒"><span class="nav-number">23.</span> <span class="nav-text">黑盒到白盒</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#非生产环境"><span class="nav-number">24.</span> <span class="nav-text">非生产环境</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#导出注入"><span class="nav-number">25.</span> <span class="nav-text">导出注入</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#越权绕过"><span class="nav-number">26.</span> <span class="nav-text">越权绕过</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#XSS"><span class="nav-number">27.</span> <span class="nav-text">XSS</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#net-应用tips"><span class="nav-number">28.</span> <span class="nav-text">.net 应用tips</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#了解应用的基础实现"><span class="nav-number">29.</span> <span class="nav-text">了解应用的基础实现</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#旧版本的移动端"><span class="nav-number">30.</span> <span class="nav-text">旧版本的移动端</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#limit-dos"><span class="nav-number">31.</span> <span class="nav-text">limit dos</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sharp_T</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
