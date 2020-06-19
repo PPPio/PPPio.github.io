@@ -82,10 +82,10 @@
 <meta name="description" content="剑气纵横三万里">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sharp_T&#39;s Blog">
-<meta property="og:url" content="http:&#x2F;&#x2F;yoursite.com&#x2F;index.html">
+<meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Sharp_T&#39;s Blog">
 <meta property="og:description" content="剑气纵横三万里">
-<meta property="og:locale" content="zh-Hans">
+<meta property="article:author" content="Sharp_T">
 <meta name="twitter:card" content="summary">
 
 
@@ -132,7 +132,7 @@
 
 
 
-</head>
+<meta name="generator" content="Hexo 4.2.1"></head>
 
 <body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
 
@@ -345,9 +345,11 @@
           
           前两天看了网鼎杯的一道题目，其中涉及到了一些比较有意思的东西，记录一下。
 题目地址ctfhub上已有题目环境
-1https:&#x2F;&#x2F;www.ctfhub.com&#x2F;#&#x2F;challenge
+1https://www.ctfhub.com/#/challenge
 
-题目名为nmap，访问首页内容为输入ip或域名调用namp扫描，前端注释里提
+题目名为nmap，访问首页内容为输入ip或域名调用namp扫描，前端注释里提示了flag位置，很直白的一道题目：
+
+
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -648,9 +650,9 @@ https://github.com/smodnix/31-days-of-API-Security-Tips
           看了key师傅的分享之后开阔了很多思路，简单记录一下。
 https://gh0st.cn/archives/2019-11-11/1
 万物皆可FUZZ遇到这样一个请求：
-1GET &#x2F;admin&#x2F;getinfo2Host: target.com3...
+123GET /admin/getinfoHost: target.com...
 响应：
-1&#123;2  
+12345&#123;    "id":
           ...
           <!--noindex-->
           <div class="post-button text-center">
@@ -953,7 +955,7 @@ websocket与http的是没有任
           
           看了R3start师傅的分享，学到了一个新的姿势-Hosts碰撞。
 场景项目第一阶段，我们通过各种方法进行信息收集：
-11. 目标主业务二级域名、三级域名等…多级域名收集2✓ 通过FOFA语法收集3✓ 通过子域名爆破、反查收集4✓ 通过JS接口收集5✓ 通过Github信息泄露6✓ …72. 业务强
+1234567891011121314151617181. 目标主业务二级域名、三级域名等…多级域名收集✓ 通过FOFA语法收集✓ 通过子域名爆破、反查收集✓ 通过JS接口收集✓ 通
           ...
           <!--noindex-->
           <div class="post-button text-center">
