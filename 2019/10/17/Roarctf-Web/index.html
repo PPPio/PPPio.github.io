@@ -101,7 +101,7 @@
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/30/K4wCOx.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/30/K40zs1.png">
 <meta property="article:published_time" content="2019-10-17T12:11:04.000Z">
-<meta property="article:modified_time" content="2020-03-01T12:25:57.477Z">
+<meta property="article:modified_time" content="2020-06-19T16:09:29.379Z">
 <meta property="article:author" content="Sharp_T">
 <meta property="article:tag" content="CTF-Web">
 <meta name="twitter:card" content="summary">
@@ -368,23 +368,27 @@
 <p>但是它这里把这个错误的请求发送到了后端服务器，后端服务器认为这个请求正常，直接就响应了，这样就绕过了中间的WAF。</p>
 <p>代码执行<br><img src="https://s2.ax1x.com/2019/10/17/KAmWkV.png" alt=""></p>
 <p>有了phpinfo之后需要关注一下disable_functions，可以看到exec、shell_exec、system等函数都被禁用了。<br><img src="https://s2.ax1x.com/2019/10/17/KAmo6J.png" alt=""></p>
-<p>找flag我们需要先列目录。从phpinfo里可以看到chdir已被禁用，这里用到了scandir()<br>直接使用scandir返回的是数组，还需要用var_dump()输出数组的详细信息。<br><code>var_dump(scandir(&#39;/&#39;));</code></p>
+<p>找flag我们需要先列目录。从phpinfo里可以看到chdir已被禁用，这里用到了scandir()<br>直接使用scandir返回的是数组，还需要用var_dump()输出数组的详细信息。</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">var_dump(<span class="name">scandir</span>('/'))<span class="comment">;</span></span><br></pre></td></tr></table></figure></div>
+
 <p>但是这里还存在对单引号、斜杠等符号的过滤，使用几个进制转换的函数绕过。</p>
-<p><strong>base_convert() 函数在任意进制之间转换数字。</strong><br><em>例：</em>base_convert(55490343972,10,36)() == phpinfo()</p>
+<p><strong>base_convert() 函数在任意进制之间转换数字。</strong></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">例：base_convert(<span class="number">55490343972</span>,<span class="number">10</span>,<span class="number">36</span>)() == phpinfo()</span><br></pre></td></tr></table></figure></div>
+
 <p><strong>dechex() 函数把十进制数转换为十六进制数。</strong></p>
 <p><strong>hex2bin() 函数把十六进制值的字符串转换为 ASCII 字符。</strong></p>
-<p>构造payload<br><img src="https://s2.ax1x.com/2019/10/17/KAKo6g.png" alt=""><br><code>var_dump(scandir(/))</code><br><code>var_dump(base_convert(61693386291,10,36)(hex2bin(dechex(47))))</code></p>
+<p>构造payload<br><img src="https://s2.ax1x.com/2019/10/17/KAKo6g.png" alt=""></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">var_dump(<span class="name">scandir</span>(<span class="name">/</span>))</span><br><span class="line">var_dump(<span class="name">base_convert</span>(<span class="number">61693386291</span>,<span class="number">10</span>,<span class="number">36</span>)(<span class="name">hex2bin</span>(<span class="name">dechex</span>(<span class="number">47</span>))))</span><br></pre></td></tr></table></figure></div>
+
 <p><strong>注：</strong>scandir这个函数在平时使用的时候参数是一个字符串，而在http传输的时候切不可使用引号，否则会返回错误。</p>
 <p>列目录发现flag！<br><img src="https://s2.ax1x.com/2019/10/17/KAl0f0.png" alt=""></p>
 <p>构造readfile读flag</p>
-<p><code>base_convert(2146934604002,10,36)(hex2bin(dechex(47)).base_convert(25254448,10,36))</code><br><img src="https://s2.ax1x.com/2019/10/17/KAlHne.png" alt=""></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /angelscript"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">base_convert(<span class="number">2146934604002</span>,<span class="number">10</span>,<span class="number">36</span>)(hex2bin(dechex(<span class="number">47</span>)).base_convert(<span class="number">25254448</span>,<span class="number">10</span>,<span class="number">36</span>))</span><br></pre></td></tr></table></figure></div>
+<p><img src="https://s2.ax1x.com/2019/10/17/KAlHne.png" alt=""></p>
 <h1 id="Web-2-easy-java"><a href="#Web-2-easy-java" class="headerlink" title="Web-2 easy_java"></a>Web-2 easy_java</h1><p>进入之后是一个迷惑性的登录界面<br><img src="https://ftp.bmp.ovh/imgs/2019/10/f8ae5dcdac48fe37.png" alt=""><br>其实关键点在帮助文档下载那儿，点击之后第一个想到任意文件下载，但是点击之后报错：<br><img src="https://ftp.bmp.ovh/imgs/2019/10/d5ee69db94c74929.png" alt=""><br>有经验的话就会换个请求方式试一下，POST方式成功：<br><img src="https://s2.ax1x.com/2019/10/30/K4dkGj.png" alt=""><br>通过报错页面可以看到是tomcat，可以下载 WEB-INF/web.xml ，看到了和flag相关的文件<br><img src="https://s2.ax1x.com/2019/10/30/K4wCOx.png" alt=""><br><strong>WEB-INF</strong></p>
 <p><em>WEB-INF是Java的WEB应用的安全目录。如果想在页面中直接访问其中的文件，必须通过web.xml文件对要访问的文件进行相应映射才能访问。WEB-INF主要包含一下文件或目录：</em></p>
-<p><code>/WEB-INF/web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则。</code></p>
-<p><code>/WEB-INF/classes/：含了站点所有用的 class 文件，包括 servlet class 和非servlet class，他们不能包含在 .jar文件中</code></p>
-<p><code>/WEB-INF/lib/：存放web应用需要的各种JAR文件，放置仅在这个应用中要求使用的jar文件,如数据库驱动jar文件</code></p>
-<p><code>/WEB-INF/src/：源码目录，按照包名结构放置各个java文件</code></p>
-<p><code>/WEB-INF/database.properties：数据库配置文件</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /crystal"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">/WEB-INF/web.xml：Web应用程序配置文件，描述了 servlet 和其他的应用组件配置及命名规则。</span><br><span class="line">/WEB-INF/classes/：含了站点所有用的 <span class="class"><span class="keyword">class</span> 文件，包括 <span class="title">servlet</span> <span class="title">class</span> 和非<span class="title">servlet</span> <span class="title">class</span>，他们不能包含在 .<span class="title">jar</span>文件中</span></span><br><span class="line">/WEB-INF/<span class="class"><span class="keyword">lib</span>/：存放<span class="title">web</span>应用需要的各种<span class="title">JAR</span>文件，放置仅在这个应用中要求使用的<span class="title">jar</span>文件,如数据库驱动<span class="title">jar</span>文件</span></span><br><span class="line">/WEB-INF/src/：源码目录，按照包名结构放置各个java文件</span><br><span class="line">/WEB-INF/database.properties：数据库配置文件</span><br></pre></td></tr></table></figure></div>
+
 <p>下载该文件，根据其文件的分类规则我们推出其文件的位置<br>WEB-INF/classes/com/wm/ctf/FlagController.class<br><img src="https://s2.ax1x.com/2019/10/30/K40zs1.png" alt=""><br>解码得到flag。</p>
 
       

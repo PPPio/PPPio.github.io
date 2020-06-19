@@ -93,7 +93,7 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2020/06/bc8cdfef549f6db3.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2020/06/792fd72d2a51e28a.png">
 <meta property="article:published_time" content="2020-06-01T08:13:06.000Z">
-<meta property="article:modified_time" content="2020-06-17T10:21:14.735Z">
+<meta property="article:modified_time" content="2020-06-19T16:07:08.837Z">
 <meta property="article:author" content="Sharp_T">
 <meta property="article:tag" content="CTF-Web">
 <meta name="twitter:card" content="summary">
@@ -361,7 +361,7 @@
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">echo</span> system(<span class="string">"nmap -T4 -sT -Pn -F "</span>.<span class="variable">$host</span>);</span><br></pre></td></tr></table></figure></div>
 
 <p>需要用到的nmap参数：</p>
-<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-iL　　从inputfilename文件中读取扫描的目标。在这个文件中要有一个主机或者网络的列表，由空格键、制表键或者回车键作为分割符。如果使用-iL-，nmap就会从标准输入stdin读取主机名字。你可以从指定目标一节得到更加详细的信息</span></span><br><span class="line"><span class="deletion">-oN/-oX/-oG　　把扫描结果重定向到一个可读的文件logfilename中，分别是正常、XML、grepable 三种格式</span></span><br></pre></td></tr></table></figure></div>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /diff"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line"><span class="deletion">-iL　　</span></span><br><span class="line">从inputfilename文件中读取扫描的目标。在这个文件中要有一个主机或者网络的列表，由空格键、制表键或者回车键作为分割符。如果使用-iL-，nmap就会从标准输入stdin读取主机名字。你可以从指定目标一节得到更加详细的信息</span><br><span class="line"><span class="deletion">-oN/-oX/-oG　　</span></span><br><span class="line">把扫描结果重定向到一个可读的文件logfilename中，分别是正常、XML、grepable 三种格式</span><br></pre></td></tr></table></figure></div>
 
 <h4 id="解法一"><a href="#解法一" class="headerlink" title="解法一"></a>解法一</h4><p>通过-iL参数读取/flag内容，然后通过-oN将扫描结果输出到一个文件中，payload:</p>
 <div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /accesslog"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="number">127.0.0.1</span>' -iL /flag -oN flag.txt '</span><br></pre></td></tr></table></figure></div>

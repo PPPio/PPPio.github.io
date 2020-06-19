@@ -89,7 +89,7 @@
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/12/4fc2b3128f279d28.png">
 <meta property="og:image" content="https://i.bmp.ovh/imgs/2019/12/f69431014ba7c6ce.png">
 <meta property="article:published_time" content="2019-07-26T10:02:14.000Z">
-<meta property="article:modified_time" content="2020-03-16T07:32:44.158Z">
+<meta property="article:modified_time" content="2020-06-19T16:03:20.015Z">
 <meta property="article:author" content="Sharp_T">
 <meta property="article:tag" content="CSRF">
 <meta name="twitter:card" content="summary">
@@ -354,7 +354,9 @@
 <p>但是使用xhr构造的页面，请求头中依旧没有该字段。</p>
 <p>是因为X-Requested-With: XMLHttpRequest在跨域请求中会被去掉（如果跨域配置允许时候可以带着，看配置）。</p>
 <p>但是又想到xhr是可以设置head头字段的，尝试手动强制加上这个字段：</p>
-<pre><code>xhr.setRequestHeader(&quot;X-Requested-With&quot;, &quot;XMLHttpRequest&quot;);</code></pre><p>但是这样的话会首先发一个options预检报文，这是跨域访问的一种安全检查机制，会带上3个请求头字段：</p>
+<div class="highlight-wrap"autocomplete="off" autocorrect="off" autocapitalize="off" spellcheck="false" contenteditable="true"data-rel=""><figure class="iseeu highlight /less"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="selector-tag">xhr</span><span class="selector-class">.setRequestHeader</span>(<span class="string">"X-Requested-With"</span>, <span class="string">"XMLHttpRequest"</span>);</span><br></pre></td></tr></table></figure></div>
+
+<p>但是这样的话会首先发一个options预检报文，这是跨域访问的一种安全检查机制，会带上3个请求头字段：</p>
 <pre><code>Access-Control-Request-Method: POST
 Access-Control-Request-Headers: x-requested-with
 Origin: null</code></pre><p><img src="https://i.bmp.ovh/imgs/2019/12/f69431014ba7c6ce.png" alt=""></p>
