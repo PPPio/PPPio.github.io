@@ -495,9 +495,7 @@
         
           
           Json格式的CSRF有这样一个场景，新增用户不校验Referer，没有token，马上可以想到CSRF漏洞。但它又有一些不同的是它提交的数据是Json格式的，请求包类似：
-POST /api/add HTTP/1.1
-Host: target.com
-User-Agent: Mozilla/5.0
+123456789101112131415POST /api/add HTTP/1.1Host: target.comUser
           ...
           <!--noindex-->
           <div class="post-button text-center">
